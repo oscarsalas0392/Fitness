@@ -10,7 +10,7 @@ namespace Fitness.Data.ClasesRepository
 {
     public class UsuarioRepositorio : BaseRepositorio<Usuario, int>
     {
-        public UsuarioRepositorio(dbContext db) : base(db){}
+        public UsuarioRepositorio(FTContext db) : base(db){}
 
         public async Task<bool> ValidarUsuario(string correo, string nombreUsuario, string contrasena)
         {

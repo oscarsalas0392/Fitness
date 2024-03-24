@@ -4,15 +4,17 @@ using System;
 using System.Collections.Generic;
 using Fitness.Model.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Fitness.Data;
 
-public partial class dbContext : DbContext
+public partial class FTContext : DbContext
 {
-    public dbContext(DbContextOptions<dbContext> options)
+    public FTContext(DbContextOptions<FTContext> options)
         : base(options)
     {
     }
+
 
     public virtual DbSet<ActividadFisica> ActividadesFisicas { get; set; }
 
@@ -26,7 +28,7 @@ public partial class dbContext : DbContext
 
     public virtual DbSet<TipoAltura> TiposAlturas { get; set; }
 
-    public virtual DbSet<TipoComida> TiposComidas { get; set; }
+    public virtual DbSet<TipoComida> TipoComida { get; set; }
 
     public virtual DbSet<TipoDistancia> TiposDistancias { get; set; }
 
@@ -35,6 +37,23 @@ public partial class dbContext : DbContext
     public virtual DbSet<TipoPeso> TiposPesos { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
+
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+
+        if (!optionsBuilder.IsConfigured)
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PR"));
+        }
+
+
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

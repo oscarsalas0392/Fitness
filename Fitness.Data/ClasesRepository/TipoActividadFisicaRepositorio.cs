@@ -9,6 +9,6 @@ namespace Fitness.Data.ClasesRepository
 {
     public class TipoActividadFisicaRepositorio : BaseRepositorio<TipoActividadFisica, int>
     {
-        public TipoActividadFisicaRepositorio(dbContext db) : base(db) {}
+        public TipoActividadFisicaRepositorio(FTContext db) : base(db) {}
     }
 }

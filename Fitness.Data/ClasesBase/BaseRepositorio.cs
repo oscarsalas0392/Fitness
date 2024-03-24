@@ -8,66 +8,74 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using System.Reflection;
+using Fitness.Notificacion;
 
 namespace Fitness.Data
 {
     public abstract class BaseRepositorio<T, TK> : IRepositorio<T, TK> where T : class
     {
-        readonly protected dbContext? _db = null;
+        readonly protected FTContext? _db = null;
         public string _columnaPK { get; set; } = "Id";
 
-        public BaseRepositorio(dbContext db)
+        public BaseRepositorio(FTContext db)
         {
             _db = db;
         }
 
-        public virtual async Task<bool> Guardar(T model)
+        public virtual async Task<Notificacion<T>> Guardar(T model)
         {
             try
             {
-                if (_db is null) { return false; }
+                if (_db is null) { return new Notificacion<T>(true, Accion.actualizar, true); }
                 await _db.Set<T>().AddAsync(model);
                 int resultado = await _db.SaveChangesAsync();
                 bool blnResultado = resultado == 1 ? true : false;
-                return blnResultado;
+
+                Notificacion<T> notificacion = new Notificacion<T>(blnResultado, Accion.agregar);
+                return notificacion;
 
             }
             catch (Exception)
             {
-                return false;
+                return new Notificacion<T>(true, Accion.agregar, true);
             }
-
         }
 
 
-        public virtual async Task<bool> Actualizar(T model)
+        public virtual async Task<Notificacion<T>> Actualizar(T model)
         {
             try
             {
-                if (_db is null) { return false; }
+                if (_db is null) { return new Notificacion<T>(true, Accion.actualizar,true); }
                 _db.Set<T>().Update(model);
                 int resultado = await _db.SaveChangesAsync();
                 bool blnResultado = resultado == 1 ? true : false;
-                return blnResultado;
+
+                Notificacion<T> notificacion = new Notificacion<T>(blnResultado,Accion.actualizar);
+                return notificacion;
 
             }
             catch (Exception)
             {
-                return false;
+                return new Notificacion<T>(true, Accion.actualizar, true);
             }
         }
 
-        public virtual async Task<T> ObtenerId(TK key)
+        public virtual async Task<Notificacion<T>> ObtenerId(TK key)
         {
 
             try
             {
-                if (_db is null) { return null; }
-                return await _db.Set<T>().Where($"{_columnaPK} = {key}").FirstOrDefaultAsync();
+                if (_db is null) { return new Notificacion<T>(true, Accion.obtener, true); }
+                T? objecto = await _db.Set<T>().Where($"{_columnaPK} = {key}").FirstOrDefaultAsync();
+                Notificacion<T> notificacion = new Notificacion<T>(objecto is not null, Accion.obtener);
+                notificacion.objecto = objecto;
+                return notificacion;
+
             }
             catch (Exception)
             {
-                return null;
+                return new Notificacion<T>(true, Accion.obtener, true);
             }
  
         }
@@ -79,46 +87,65 @@ namespace Fitness.Data
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
   
-        public virtual async Task<IEnumerable<T>> ObtenerLista(Filtro? pFiltro = null)
-        {
-            var result = new List<T>();
-
-            if (pFiltro == null)
-            {
-                result = await _db.Set<T>().AsNoTracking().ToListAsync();
-            }
-            else    
-            {
-                pFiltro.cantidadRegistros = await _db.Set<T>().CountAsync();
-                result = await _db.Set<T>().
-                    AsNoTracking().
-                    OrderBy(pFiltro.Ordenando).
-                    Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
-                    Take(pFiltro.tamanoPagina).ToListAsync();
-            }
-
-            return result;
-        }
-
-        public virtual async Task<bool> Eliminar(TK key)
+        public virtual async Task<Notificacion<T>> ObtenerLista(Filtro? pFiltro = null)
         {
             try
             {
-                if (_db is null) { return false; }
-                T objecto = await ObtenerId(key);
+                var result = new List<T>();
+                if (_db is null) { return new Notificacion<T>(true, Accion.obtener, true); }
+
+                if (pFiltro == null)
+                {
+                    result = await _db.Set<T>().AsNoTracking().ToListAsync();
+                }
+                else
+                {
+                    pFiltro.cantidadRegistros = await _db.Set<T>().CountAsync();
+                    result = await _db.Set<T>().
+                        AsNoTracking().
+                        OrderBy(pFiltro.Ordenando).
+                        Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
+                        Take(pFiltro.tamanoPagina).ToListAsync();
+                }
+
+                Notificacion<T> notificacion = new Notificacion<T>(result is not null, Accion.obtenerLista);
+                notificacion.lista = result;
+                return notificacion;
+            }
+            catch (Exception)
+            {  
+                Notificacion<T> notificacion = new Notificacion<T>(true, Accion.obtener, true);
+                notificacion.lista = new List<T>();
+                return notificacion;
+            }
+        }
+
+        public virtual async Task<Notificacion<T>> Eliminar(TK key)
+        {
+            try
+            {
+                if (_db is null) { return new Notificacion<T>(true, Accion.obtener, true); }
+                Notificacion<T> notificacion = await ObtenerId(key);
+                if (!notificacion._estado || notificacion._excepcion || notificacion.objecto is null)
+                {
+                    return notificacion;
+                }
+
+                T? objecto = notificacion.objecto;
                 PropertyInfo propertyInfo = objecto.GetType().GetProperty("Eliminado");
                 propertyInfo.SetValue(objecto, Convert.ChangeType(true, propertyInfo.PropertyType), null);
-                return await Actualizar(objecto);
+                Notificacion<T> notificacionActualizar = await Actualizar(objecto);
+                notificacionActualizar._accion = Accion.eliminar;
+                return notificacionActualizar;             
             }
             catch (Exception)
             {
-                return false;
-            }
-        
+                return new Notificacion<T>(true, Accion.eliminar, true);
+            } 
                 
         }
     }
