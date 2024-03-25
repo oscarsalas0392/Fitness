@@ -29,6 +29,7 @@ namespace Fitness
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddSession();
 
             services.AddTransient<IRepositorio<Dieta, int?>, DietaRepositorio>();
             services.AddTransient<IRepositorio<Genero, int?>, GeneroRepositorio>();
@@ -77,13 +78,13 @@ namespace Fitness
             app.UseAuthentication();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
            
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Acceso}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

@@ -9,6 +9,11 @@ namespace Fitness.Controllers
     {
         public IActionResult Index()
         {
+            int? id = HttpContext.Session.GetInt32("usuario");
+            if (id != null)
+            { 
+               return RedirectToAction("Index","Home");
+            }
             return View();
         }
 
