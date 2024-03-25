@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Fitness.Model.Models;
 
-public partial class Genero
+public partial class TipoMedida
 {
     public int Id { get; set; }
 
@@ -13,5 +13,5 @@ public partial class Genero
 
     public bool? Eliminado { get; set; }
 
-    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+    public virtual ICollection<Medicion> Medicions { get; set; } = new List<Medicion>();
 }

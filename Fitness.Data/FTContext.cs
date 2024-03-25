@@ -15,45 +15,35 @@ public partial class FTContext : DbContext
     {
     }
 
+    public virtual DbSet<ActividadFisica> ActividadFisicas { get; set; }
 
-    public virtual DbSet<ActividadFisica> ActividadesFisicas { get; set; }
+    public virtual DbSet<AlimentoConsumido> AlimentoConsumidos { get; set; }
 
-    public virtual DbSet<Dieta> Dietas { get; set; }
+    public virtual DbSet<Dieta> Dieta { get; set; }
 
     public virtual DbSet<Genero> Generos { get; set; }
 
-    public virtual DbSet<MetaSalud> MetasSalud { get; set; }
+    public virtual DbSet<Medicion> Medicions { get; set; }
 
-    public virtual DbSet<TipoActividadFisica> TiposActividadesFisicas { get; set; }
+    public virtual DbSet<MetaSalud> MetaSaluds { get; set; }
 
-    public virtual DbSet<TipoAltura> TiposAlturas { get; set; }
+    public virtual DbSet<Revision> Revisions { get; set; }
+
+    public virtual DbSet<TipoActividadFisica> TipoActividadFisicas { get; set; }
+
+    public virtual DbSet<TipoAltura> TipoAlturas { get; set; }
 
     public virtual DbSet<TipoComida> TipoComida { get; set; }
 
-    public virtual DbSet<TipoDistancia> TiposDistancias { get; set; }
+    public virtual DbSet<TipoDistancia> TipoDistancia { get; set; }
 
-    public virtual DbSet<TipoMeta> TiposMetas { get; set; }
+    public virtual DbSet<TipoMedida> TipoMedida { get; set; }
 
-    public virtual DbSet<TipoPeso> TiposPesos { get; set; }
+    public virtual DbSet<TipoMeta> TipoMeta { get; set; }
+
+    public virtual DbSet<TipoPeso> TipoPesos { get; set; }
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
-
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-
-        if (!optionsBuilder.IsConfigured)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PR"));
-        }
-
-
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,7 +56,13 @@ public partial class FTContext : DbContext
             entity.Property(e => e.Comentarios)
                 .HasMaxLength(500)
                 .IsUnicode(false);
-            entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.Distancia).HasColumnType("decimal(5, 2)");
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+
+            entity.HasOne(d => d.RevisionNavigation).WithMany(p => p.ActividadFisicas)
+                .HasForeignKey(d => d.Revision)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ActividadFisica_Revision");
 
             entity.HasOne(d => d.TipoNavigation).WithMany(p => p.ActividadFisicas)
                 .HasForeignKey(d => d.Tipo)
@@ -76,30 +72,44 @@ public partial class FTContext : DbContext
             entity.HasOne(d => d.TipoDistanciaNavigation).WithMany(p => p.ActividadFisicas)
                 .HasForeignKey(d => d.TipoDistancia)
                 .HasConstraintName("FK_ActividadFisica_TipoDistancia");
+        });
 
-            entity.HasOne(d => d.UsuarioNavigation).WithMany(p => p.ActividadFisicas)
-                .HasForeignKey(d => d.Usuario)
+        modelBuilder.Entity<AlimentoConsumido>(entity =>
+        {
+            entity.ToTable("AlimentoConsumido");
+
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Descripcion)
+                .IsRequired()
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+
+            entity.HasOne(d => d.DietaNavigation).WithMany(p => p.AlimentoConsumidos)
+                .HasForeignKey(d => d.Dieta)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_ActividadFisica_Usuario");
+                .HasConstraintName("FK_AlimentoConsumido_Dieta");
+
+            entity.HasOne(d => d.TipoComidaNavigation).WithMany(p => p.AlimentoConsumidos)
+                .HasForeignKey(d => d.TipoComida)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_AlimentoConsumido_TipoComida");
         });
 
         modelBuilder.Entity<Dieta>(entity =>
         {
-            entity.Property(e => e.AlimentosConsumidos)
-                .IsRequired()
-                .IsUnicode(false);
             entity.Property(e => e.Comentarios)
                 .HasMaxLength(500)
                 .IsUnicode(false);
-            entity.Property(e => e.Fecha).HasColumnType("datetime");
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+
+            entity.HasOne(d => d.RevisionNavigation).WithMany(p => p.Dieta)
+                .HasForeignKey(d => d.Revision)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Dieta_Revision");
 
             entity.HasOne(d => d.TipoComidaNavigation).WithMany(p => p.Dieta)
                 .HasForeignKey(d => d.TipoComida)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Dieta_TipoComida");
-
-            entity.HasOne(d => d.UsuarioNavigation).WithMany(p => p.Dieta)
-                .HasForeignKey(d => d.Usuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Dieta_Usuario");
         });
@@ -112,12 +122,28 @@ public partial class FTContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+        });
+
+        modelBuilder.Entity<Medicion>(entity =>
+        {
+            entity.ToTable("Medicion");
+
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+            entity.Property(e => e.ValorMedicion).HasColumnType("decimal(5, 2)");
+
+            entity.HasOne(d => d.TipoMedidaNavigation).WithMany(p => p.Medicions)
+                .HasForeignKey(d => d.TipoMedida)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Medicion_TipoMedida");
         });
 
         modelBuilder.Entity<MetaSalud>(entity =>
         {
             entity.ToTable("MetaSalud");
 
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+            entity.Property(e => e.FechaObjectivo).HasColumnType("datetime");
             entity.Property(e => e.NivelActividad)
                 .IsRequired()
                 .HasMaxLength(500)
@@ -125,16 +151,30 @@ public partial class FTContext : DbContext
             entity.Property(e => e.OjectivoEspecifico)
                 .HasMaxLength(500)
                 .IsUnicode(false);
+            entity.Property(e => e.PesoObjectivo).HasColumnType("decimal(18, 0)");
 
-            entity.HasOne(d => d.TipoMetaNavigation).WithMany(p => p.MetaSalud)
+            entity.HasOne(d => d.RevisionNavigation).WithMany(p => p.MetaSaluds)
+                .HasForeignKey(d => d.Revision)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_MetaSalud_Revision");
+
+            entity.HasOne(d => d.TipoMetaNavigation).WithMany(p => p.MetaSaluds)
                 .HasForeignKey(d => d.TipoMeta)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_MetaSalud_TipoMeta");
+        });
 
-            entity.HasOne(d => d.UsuarioNavigation).WithMany(p => p.MetaSalud)
+        modelBuilder.Entity<Revision>(entity =>
+        {
+            entity.ToTable("Revision");
+
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+            entity.Property(e => e.Fecha).HasColumnType("datetime");
+
+            entity.HasOne(d => d.UsuarioNavigation).WithMany(p => p.Revisions)
                 .HasForeignKey(d => d.Usuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_MetaSalud_Usuario");
+                .HasConstraintName("FK_Revision_Usuario");
         });
 
         modelBuilder.Entity<TipoActividadFisica>(entity =>
@@ -144,6 +184,7 @@ public partial class FTContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<TipoAltura>(entity =>
@@ -154,6 +195,7 @@ public partial class FTContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<TipoComida>(entity =>
@@ -161,6 +203,7 @@ public partial class FTContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<TipoDistancia>(entity =>
@@ -168,6 +211,16 @@ public partial class FTContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+        });
+
+        modelBuilder.Entity<TipoMedida>(entity =>
+        {
+            entity.Property(e => e.Descripcion)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<TipoMeta>(entity =>
@@ -175,6 +228,7 @@ public partial class FTContext : DbContext
             entity.Property(e => e.Descripcion)
                 .HasMaxLength(100)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<TipoPeso>(entity =>
@@ -187,6 +241,7 @@ public partial class FTContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -201,6 +256,7 @@ public partial class FTContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
             entity.Property(e => e.FechaNacimiento).HasColumnType("datetime");
             entity.Property(e => e.Foto)
                 .IsUnicode(false)
@@ -213,6 +269,7 @@ public partial class FTContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Peso).HasColumnType("decimal(18, 0)");
 
             entity.HasOne(d => d.GeneroNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.Genero)
@@ -223,11 +280,6 @@ public partial class FTContext : DbContext
                 .HasForeignKey(d => d.TipoAltura)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Usuario_TipoAltura");
-
-            entity.HasOne(d => d.TipoPesoNavigation).WithMany(p => p.Usuarios)
-                .HasForeignKey(d => d.TipoPeso)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Usuario_TipoPeso");
         });
 
         OnModelCreatingPartial(modelBuilder);

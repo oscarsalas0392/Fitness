@@ -11,5 +11,7 @@ public partial class TipoAltura
 
     public string Descripcion { get; set; }
 
+    public bool? Eliminado { get; set; }
+
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
 }

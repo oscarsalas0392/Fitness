@@ -5,13 +5,19 @@ using System.Collections.Generic;
 
 namespace Fitness.Model.Models;
 
-public partial class Genero
+public partial class AlimentoConsumido
 {
     public int Id { get; set; }
+
+    public int TipoComida { get; set; }
+
+    public int Dieta { get; set; }
 
     public string Descripcion { get; set; }
 
     public bool? Eliminado { get; set; }
 
-    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+    public virtual Dieta DietaNavigation { get; set; }
+
+    public virtual TipoComida TipoComidaNavigation { get; set; }
 }

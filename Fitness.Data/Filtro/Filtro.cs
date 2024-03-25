@@ -19,7 +19,7 @@ namespace Fitness.Data
  
         public string columnaOrdenar { get; set; }
 
-   
+        public string columnaBuscar { get; set; }
         public string tipoOrdernar { get; set; }
 
   

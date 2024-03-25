@@ -11,5 +11,5 @@ public partial class TipoPeso
 
     public string Descripcion { get; set; }
 
-    public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
+    public bool? Eliminado { get; set; }
 }

@@ -23,23 +23,17 @@ public partial class Usuario
 
     public int TipoAltura { get; set; }
 
-    public int Peso { get; set; }
-
-    public int TipoPeso { get; set; }
+    public decimal Peso { get; set; }
 
     public int Genero { get; set; }
 
     public string Foto { get; set; }
 
-    public virtual ICollection<ActividadFisica> ActividadFisicas { get; set; } = new List<ActividadFisica>();
-
-    public virtual ICollection<Dieta> Dieta { get; set; } = new List<Dieta>();
+    public bool? Eliminado { get; set; }
 
     public virtual Genero GeneroNavigation { get; set; }
 
-    public virtual ICollection<MetaSalud> MetaSalud { get; set; } = new List<MetaSalud>();
+    public virtual ICollection<Revision> Revisions { get; set; } = new List<Revision>();
 
     public virtual TipoAltura TipoAlturaNavigation { get; set; }
-
-    public virtual TipoPeso TipoPesoNavigation { get; set; }
 }

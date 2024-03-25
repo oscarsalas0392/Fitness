@@ -1,33 +1,31 @@
 ﻿@model Fitness.Model.Models.TipoComida
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Tipo de comida";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
-</head>
-<body>
 
 <div>
     <h4>TipoComida</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
+                Descripción
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Descripcion)
         </dd>
+        <dt class = "col-sm-2">
+            Calorías
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Calorias)
+        </dd>
+  
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> 
+    <a asp-action="Index">Regresar</a>
 </div>
-</body>
-</html>
+

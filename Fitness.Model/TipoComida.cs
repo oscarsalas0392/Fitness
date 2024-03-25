@@ -11,5 +11,11 @@ public partial class TipoComida
 
     public string Descripcion { get; set; }
 
+    public int Calorias { get; set; }
+
+    public bool? Eliminado { get; set; }
+
+    public virtual ICollection<AlimentoConsumido> AlimentoConsumidos { get; set; } = new List<AlimentoConsumido>();
+
     public virtual ICollection<Dieta> Dieta { get; set; } = new List<Dieta>();
 }

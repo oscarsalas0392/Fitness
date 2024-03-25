@@ -5,13 +5,21 @@ using System.Collections.Generic;
 
 namespace Fitness.Model.Models;
 
-public partial class TipoMeta
+public partial class Revision
 {
     public int Id { get; set; }
 
-    public string Descripcion { get; set; }
+    public int Usuario { get; set; }
+
+    public DateTime Fecha { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    public virtual ICollection<ActividadFisica> ActividadFisicas { get; set; } = new List<ActividadFisica>();
+
+    public virtual ICollection<Dieta> Dieta { get; set; } = new List<Dieta>();
+
     public virtual ICollection<MetaSalud> MetaSaluds { get; set; } = new List<MetaSalud>();
+
+    public virtual Usuario UsuarioNavigation { get; set; }
 }

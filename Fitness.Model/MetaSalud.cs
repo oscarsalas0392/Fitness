@@ -9,19 +9,21 @@ public partial class MetaSalud
 {
     public int Id { get; set; }
 
-    public int Usuario { get; set; }
+    public int Revision { get; set; }
 
     public int TipoMeta { get; set; }
 
-    public int PesoObjectivo { get; set; }
+    public decimal PesoObjectivo { get; set; }
 
-    public int FechaObjectivo { get; set; }
+    public DateTime FechaObjectivo { get; set; }
 
     public string NivelActividad { get; set; }
 
     public string OjectivoEspecifico { get; set; }
 
-    public virtual TipoMeta TipoMetaNavigation { get; set; }
+    public bool? Eliminado { get; set; }
 
-    public virtual Usuario UsuarioNavigation { get; set; }
+    public virtual Revision RevisionNavigation { get; set; }
+
+    public virtual TipoMeta TipoMetaNavigation { get; set; }
 }

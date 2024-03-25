@@ -13,8 +13,9 @@ namespace Fitness.Data.Interfaces
     {
         Task<Notificacion<T>> Guardar(T model);
         Task<Notificacion<T>> Actualizar(T model);
-        Task<Notificacion<T>> ObtenerId(TK key);
+        Task<Notificacion<T>> ObtenerId(TK? key);
         Task<Notificacion<T>> ObtenerLista(Filtro? pf = null);
         Task<Notificacion<T>> Eliminar(TK key);
+        Task<Notificacion<T>> Buscar(string filtro, Filtro pf);
     }
 }

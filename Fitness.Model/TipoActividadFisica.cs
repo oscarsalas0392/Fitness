@@ -11,5 +11,7 @@ public partial class TipoActividadFisica
 
     public string Descripcion { get; set; }
 
+    public bool? Eliminado { get; set; }
+
     public virtual ICollection<ActividadFisica> ActividadFisicas { get; set; } = new List<ActividadFisica>();
 }

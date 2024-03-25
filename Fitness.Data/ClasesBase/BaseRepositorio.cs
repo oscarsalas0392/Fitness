@@ -61,12 +61,12 @@ namespace Fitness.Data
             }
         }
 
-        public virtual async Task<Notificacion<T>> ObtenerId(TK key)
+        public virtual async Task<Notificacion<T>> ObtenerId(TK? key)
         {
 
             try
             {
-                if (_db is null) { return new Notificacion<T>(true, Accion.obtener, true); }
+                if (_db is null || key is null) { return new Notificacion<T>(false, Accion.obtener);}
                 T? objecto = await _db.Set<T>().Where($"{_columnaPK} = {key}").FirstOrDefaultAsync();
                 Notificacion<T> notificacion = new Notificacion<T>(objecto is not null, Accion.obtener);
                 notificacion.objecto = objecto;
@@ -107,6 +107,7 @@ namespace Fitness.Data
                     pFiltro.cantidadRegistros = await _db.Set<T>().CountAsync();
                     result = await _db.Set<T>().
                         AsNoTracking().
+                        Where($"Eliminado = false").
                         OrderBy(pFiltro.Ordenando).
                         Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
                         Take(pFiltro.tamanoPagina).ToListAsync();
@@ -137,7 +138,7 @@ namespace Fitness.Data
 
                 T? objecto = notificacion.objecto;
                 PropertyInfo propertyInfo = objecto.GetType().GetProperty("Eliminado");
-                propertyInfo.SetValue(objecto, Convert.ChangeType(true, propertyInfo.PropertyType), null);
+                propertyInfo.SetValue(objecto, true);
                 Notificacion<T> notificacionActualizar = await Actualizar(objecto);
                 notificacionActualizar._accion = Accion.eliminar;
                 return notificacionActualizar;             
@@ -147,6 +148,33 @@ namespace Fitness.Data
                 return new Notificacion<T>(true, Accion.eliminar, true);
             } 
                 
+        }
+
+        public virtual async Task<Notificacion<T>> Buscar(string filtro,Filtro pf)
+        {
+            try
+            {
+                var result = new List<T>();
+
+                if (_db is null) { return new Notificacion<T>(true, Accion.obtenerLista, true); }
+                pf.cantidadRegistros = await _db.Set<T>().CountAsync();
+
+                result = await _db.Set<T>().AsNoTracking().
+                    Where($"{pf.columnaBuscar}.Contains(\"{filtro}\") && Eliminado = false").
+                    OrderBy(pf.Ordenando).
+                    Skip((pf.numeroPagina - 1) * pf.tamanoPagina).
+                    Take(pf.tamanoPagina).ToListAsync();
+
+                Notificacion<T> notificacion = new Notificacion<T>(result is not null, Accion.obtenerLista);
+                notificacion.lista = result;
+                return notificacion;     
+            }
+            catch(Exception) 
+            {
+                Notificacion<T> notificacion = new Notificacion<T>(true, Accion.obtener, true);
+                notificacion.lista = new List<T>();
+                return notificacion;
+            }
         }
     }
 }

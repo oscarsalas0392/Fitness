@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Fitness.Data.ClasesRepository
 {
-    public class TipoPesoRepositorio : BaseRepositorio<TipoPeso, int>
+    public class TipoPesoRepositorio : BaseRepositorio<TipoPeso, int?>
     {
         public TipoPesoRepositorio(FTContext db) : base(db){}
     }

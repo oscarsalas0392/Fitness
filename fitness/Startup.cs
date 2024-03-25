@@ -30,17 +30,17 @@ namespace Fitness
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddTransient<IRepositorio<Dieta, int>, DietaRepositorio>();
-            services.AddTransient<IRepositorio<Genero, int>, GeneroRepositorio>();
-            services.AddTransient<IRepositorio<MetaSalud, int>, MetaSaludRepositorio>();
-            services.AddTransient<IRepositorio<TipoAltura, int>, TipoAlturaRepositorio>();
-            services.AddTransient<IRepositorio<TipoComida, int>, TipoComidaRepositorio>();
-            services.AddTransient<IRepositorio<TipoDistancia, int>, TipoDistanciaRepositorio>();
-            services.AddTransient<IRepositorio<TipoMeta, int>, TipoMetaRepositorio>();
-            services.AddTransient<IRepositorio<TipoPeso, int>, TipoPesoRepositorio>();
-            services.AddTransient<IRepositorio<Usuario, int>, UsuarioRepositorio>();
-            services.AddTransient<IRepositorio<TipoActividadFisica, int>, TipoActividadFisicaRepositorio>();
-            services.AddTransient<IRepositorio<ActividadFisica, int>, ActividadFisicaRepositorio>();
+            services.AddTransient<IRepositorio<Dieta, int?>, DietaRepositorio>();
+            services.AddTransient<IRepositorio<Genero, int?>, GeneroRepositorio>();
+            services.AddTransient<IRepositorio<MetaSalud, int?>, MetaSaludRepositorio>();
+            services.AddTransient<IRepositorio<TipoAltura, int?>, TipoAlturaRepositorio>();
+            services.AddTransient<IRepositorio<TipoComida, int?>, TipoComidaRepositorio>();
+            services.AddTransient<IRepositorio<TipoDistancia, int?>, TipoDistanciaRepositorio>();
+            services.AddTransient<IRepositorio<TipoMeta, int?>, TipoMetaRepositorio>();
+            services.AddTransient<IRepositorio<TipoPeso, int?>, TipoPesoRepositorio>();
+            services.AddTransient<IRepositorio<Usuario, int?>, UsuarioRepositorio>();
+            services.AddTransient<IRepositorio<TipoActividadFisica, int?>, TipoActividadFisicaRepositorio>();
+            services.AddTransient<IRepositorio<ActividadFisica, int?>, ActividadFisicaRepositorio>();
 
             services.AddTransient(typeof(DietaRepositorio));
             services.AddTransient(typeof(GeneroRepositorio));

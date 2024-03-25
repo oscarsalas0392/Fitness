@@ -10,17 +10,18 @@ using Fitness.Model.Models;
 using Fitness.Data.ClasesRepository;
 using Fitness.Data.Interfaces;
 using Fitness.Notificacion;
+using Fitness.ViewModels;
+using Fitness.Extensions;
 
 namespace Fitness.Controllers
 {
     public class TipoComidaController : Controller
     {
         private readonly FTContext _context;
-        private readonly IRepositorio<TipoComida, int> _cR;
+        private readonly IRepositorio<TipoComida, int?> _cR;
         private readonly TipoComidaRepositorio _cR2;
 
-
-        public TipoComidaController(FTContext context, IRepositorio<TipoComida, int> cR, TipoComidaRepositorio cR2)
+        public TipoComidaController(FTContext context, IRepositorio<TipoComida, int?> cR, TipoComidaRepositorio cR2)
         {
             _context = context;
             _cR = cR;
@@ -28,30 +29,29 @@ namespace Fitness.Controllers
         }
 
         // GET: TipoComida
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(TipoComidaIndexViewModel vm)
         {
-            Notificacion<TipoComida> notificacion = await _cR.ObtenerLista();
-            return View(notificacion.lista);
+            await vm.HandleRequest(_cR2);
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("IndexTable", vm);
+            }
+            return View(vm);
+          
         }
 
         // GET: TipoComida/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Notificacion<TipoComida> notificacion = await _cR.ObtenerId(id.Value);
+            Notificacion<TipoComida> notificacion = await _cR.ObtenerId(id);
 
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
             }
-
-            TipoComida? tipoComida = notificacion.objecto;
-
-            return View(tipoComida);
+  
+            return View(notificacion.objecto);
         }
 
         // GET: TipoComida/Create
@@ -65,7 +65,7 @@ namespace Fitness.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Descripcion")] TipoComida tipoComida)
+        public async Task<IActionResult> Create([Bind("Id,Descripcion,Calorias,Eliminado")] TipoComida tipoComida)
         {
             if (ModelState.IsValid)
             {
@@ -78,20 +78,14 @@ namespace Fitness.Controllers
         // GET: TipoComida/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Notificacion<TipoComida> notificacion = await _cR.ObtenerId(id.Value);
+            Notificacion<TipoComida> notificacion = await _cR.ObtenerId(id);
 
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
             }
-            TipoComida? tipoComida = notificacion.objecto;
 
-            return View(tipoComida);
+            return View(notificacion.objecto);
         }
 
         // POST: TipoComida/Edit/5
@@ -99,7 +93,7 @@ namespace Fitness.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Descripcion")] TipoComida tipoComida)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Descripcion,Calorias,Eliminado")] TipoComida tipoComida)
         {
             if (id != tipoComida.Id)
             {
@@ -124,20 +118,13 @@ namespace Fitness.Controllers
         // GET: TipoComida/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Notificacion<TipoComida> notificacion = await _cR.ObtenerId(id.Value);
+            Notificacion<TipoComida> notificacion = await _cR.ObtenerId(id);
 
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
             }
-            TipoComida? tipoComida = notificacion.objecto;
-
-            return View(tipoComida);
+            return View(notificacion.objecto);
         }
 
         // POST: TipoComida/Delete/5
@@ -149,6 +136,6 @@ namespace Fitness.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-  
+ 
     }
 }
