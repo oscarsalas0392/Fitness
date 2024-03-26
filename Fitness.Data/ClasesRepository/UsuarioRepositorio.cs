@@ -1,4 +1,5 @@
 ﻿using Fitness.Model.Models;
+using Fitness.Notificacion;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,12 +13,23 @@ namespace Fitness.Data.ClasesRepository
     {
         public UsuarioRepositorio(FTContext db) : base(db){}
 
-        public async Task<bool> ValidarUsuario(string correo, string nombreUsuario, string contrasena)
+        public async Task<Notificacion<Usuario>> ValidarUsuario(string correo, string nombreUsuario, string contrasena)
         {
-
-           Usuario? usuario =  await _db.Usuarios.Where(x => (x.Correo == correo || x.NombreUsuario == nombreUsuario) && x.Contrasena == contrasena).FirstOrDefaultAsync();
-           bool blnResultado = usuario is Usuario ? true : false;
-           return blnResultado;
+            try 
+            {
+                if (_db is null) { return new Notificacion<Usuario>(true, Accion.obtenerLista, true); }
+                Usuario? usuario = await _db.Usuario.Where(x => (x.Correo == correo || x.NombreUsuario == nombreUsuario) && x.Contrasena == contrasena).FirstOrDefaultAsync();
+                Notificacion<Usuario> notificacion = new Notificacion<Usuario>(true,Accion.obtener);
+                notificacion.objecto = usuario;
+                return notificacion;
+            }
+            catch 
+            {
+                Notificacion<Usuario> notificacion = new Notificacion<Usuario>(true, Accion.obtener, true);
+                notificacion.objecto = null;
+                return notificacion;
+            }
+         
         }
     }
 }

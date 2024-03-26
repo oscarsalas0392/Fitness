@@ -12,6 +12,4 @@ public partial class TipoDistancia
     public string Descripcion { get; set; }
 
     public bool? Eliminado { get; set; }
-
-    public virtual ICollection<ActividadFisica> ActividadFisicas { get; set; } = new List<ActividadFisica>();
 }

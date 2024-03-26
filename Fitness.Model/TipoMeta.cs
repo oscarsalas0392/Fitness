@@ -13,5 +13,5 @@ public partial class TipoMeta
 
     public bool? Eliminado { get; set; }
 
-    public virtual ICollection<MetaSalud> MetaSaluds { get; set; } = new List<MetaSalud>();
+    public virtual ICollection<MetaSalud> MetaSalud { get; set; } = new List<MetaSalud>();
 }

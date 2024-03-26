@@ -9,15 +9,13 @@ public partial class AlimentoConsumido
 {
     public int Id { get; set; }
 
-    public int TipoComida { get; set; }
-
     public int Dieta { get; set; }
 
-    public string Descripcion { get; set; }
+    public int Alimento { get; set; }
 
-    public bool? Eliminado { get; set; }
+    public int Opcion { get; set; }
+
+    public virtual Alimento AlimentoNavigation { get; set; }
 
     public virtual Dieta DietaNavigation { get; set; }
-
-    public virtual TipoComida TipoComidaNavigation { get; set; }
 }

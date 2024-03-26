@@ -5,13 +5,15 @@ using System.Collections.Generic;
 
 namespace Fitness.Model.Models;
 
-public partial class TipoActividadFisica
+public partial class BitacoraPeso
 {
     public int Id { get; set; }
 
-    public string Descripcion { get; set; }
+    public int Usuario { get; set; }
 
-    public bool? Eliminado { get; set; }
+    public decimal Peso { get; set; }
 
-    public virtual ICollection<ActividadFisica> ActividadFisica { get; set; } = new List<ActividadFisica>();
+    public DateTime Fecha { get; set; }
+
+    public virtual Usuario UsuarioNavigation { get; set; }
 }

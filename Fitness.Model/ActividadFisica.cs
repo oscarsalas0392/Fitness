@@ -9,15 +9,13 @@ public partial class ActividadFisica
 {
     public int Id { get; set; }
 
-    public int Revision { get; set; }
+    public int Usuario { get; set; }
 
-    public int Tipo { get; set; }
+    public int TipoActividadFisica { get; set; }
 
     public int Duracion { get; set; }
 
     public decimal? Distancia { get; set; }
-
-    public int? TipoDistancia { get; set; }
 
     public int Calorias { get; set; }
 
@@ -25,9 +23,7 @@ public partial class ActividadFisica
 
     public bool? Eliminado { get; set; }
 
-    public virtual Revision RevisionNavigation { get; set; }
+    public virtual TipoActividadFisica TipoActividadFisicaNavigation { get; set; }
 
-    public virtual TipoDistancia TipoDistanciaNavigation { get; set; }
-
-    public virtual TipoActividadFisica TipoNavigation { get; set; }
+    public virtual Usuario UsuarioNavigation { get; set; }
 }

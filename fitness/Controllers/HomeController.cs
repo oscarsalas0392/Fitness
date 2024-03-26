@@ -1,10 +1,11 @@
 using fitness.Models;
+using Fitness.ClasesBase;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace fitness.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

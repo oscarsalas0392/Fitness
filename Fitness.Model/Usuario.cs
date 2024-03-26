@@ -21,8 +21,6 @@ public partial class Usuario
 
     public int Altura { get; set; }
 
-    public int TipoAltura { get; set; }
-
     public decimal Peso { get; set; }
 
     public int Genero { get; set; }
@@ -31,9 +29,13 @@ public partial class Usuario
 
     public bool? Eliminado { get; set; }
 
+    public virtual ICollection<ActividadFisica> ActividadFisica { get; set; } = new List<ActividadFisica>();
+
+    public virtual ICollection<BitacoraPeso> BitacoraPeso { get; set; } = new List<BitacoraPeso>();
+
+    public virtual ICollection<Dieta> Dieta { get; set; } = new List<Dieta>();
+
     public virtual Genero GeneroNavigation { get; set; }
 
-    public virtual ICollection<Revision> Revisions { get; set; } = new List<Revision>();
-
-    public virtual TipoAltura TipoAlturaNavigation { get; set; }
+    public virtual ICollection<MetaSalud> MetaSalud { get; set; } = new List<MetaSalud>();
 }

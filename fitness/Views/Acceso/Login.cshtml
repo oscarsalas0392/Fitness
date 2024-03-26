@@ -33,7 +33,7 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" name="Clave" class="form-control input_pass" value="" placeholder="Contraseña">
+                            <input type="password" name="Contrasena" class="form-control input_pass" value="" placeholder="Contraseña">
                         </div>
 
                         @if (ViewData["Mensaje"] != null)
@@ -60,5 +60,22 @@
 
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    @if (TempData["MensajeError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                Swal.fire({
+                              title: "Error",
+                              text: '@TempData["MensajeError"]',
+                              icon: "error"
+                            });
+            };
+        </script>
+    }
+
 </body>
 </html>
+

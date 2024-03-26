@@ -84,7 +84,7 @@ namespace Fitness
            
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Acceso}/{action=Index}/{id?}");
+                    pattern: "{controller=Acceso}/{action=Login}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

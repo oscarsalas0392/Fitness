@@ -9,7 +9,7 @@ public partial class MetaSalud
 {
     public int Id { get; set; }
 
-    public int Revision { get; set; }
+    public int Usuario { get; set; }
 
     public int TipoMeta { get; set; }
 
@@ -23,7 +23,7 @@ public partial class MetaSalud
 
     public bool? Eliminado { get; set; }
 
-    public virtual Revision RevisionNavigation { get; set; }
-
     public virtual TipoMeta TipoMetaNavigation { get; set; }
+
+    public virtual Usuario UsuarioNavigation { get; set; }
 }

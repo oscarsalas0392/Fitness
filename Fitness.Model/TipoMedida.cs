@@ -12,6 +12,4 @@ public partial class TipoMedida
     public string Descripcion { get; set; }
 
     public bool? Eliminado { get; set; }
-
-    public virtual ICollection<Medicion> Medicions { get; set; } = new List<Medicion>();
 }
