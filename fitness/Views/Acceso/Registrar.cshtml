@@ -1,4 +1,7 @@
-﻿﻿
+﻿@using Fitness.Model.Models
+@using Fitness.ViewModels;
+@model RegistrarViewModel
+
 @{
     Layout = null;
 }
@@ -27,21 +30,45 @@
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="text" name="Correo" class="form-control input_user" value="" placeholder="Correo">
+                            <input required type="text" name="NombreUsuario" class="form-control input_user" value="@(Model.usuario !=null ? Model.usuario.NombreUsuario : "")" placeholder="Usuario">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                             </div>
-                            <input type="password" name="Clave" class="form-control input_user" value="" placeholder="Contraseña">
+                            <input required type="email" name="Correo" class="form-control input_user" value="@(Model.usuario !=null ? Model.usuario.Correo : "")" placeholder="Correo">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input required type="password" name="Contrasena" class="form-control input_user" value="@(Model.usuario !=null ? Model.usuario.Contrasena : "")" placeholder="Contraseña">
                         </div>
                         <div class="input-group mb-2">
                             <div class="input-group-append">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" name="ConfirmarClave" class="form-control input_pass" value="" placeholder="Confirmar Contraseña">
+                            <input required type="text" name="Nombre" class="form-control" value="@(Model.usuario !=null ? Model.usuario.Nombre : "")" placeholder="Nombre ">
                         </div>
 
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input required type="date" name="FechaNacimiento" class="form-control" value="@(Model.usuario !=null ? Model.usuario.FechaNacimiento : "")" placeholder="Fecha de Nacimiento">
+                        </div>
+
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <select required name="Genero" class="form-control">
+                                    @foreach(Genero genero in Model.lstGenero)
+                                    {
+                                        <option value="@genero.Id">@genero.Descripcion</option>
+                                    }
+                            </select>
+                        </div>
 
                         @if (ViewData["Mensaje"] != null)
                         {
@@ -67,5 +94,19 @@
 
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (TempData["MensajeError"] != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                Swal.fire({
+                    title: "Error",
+                    text: '@TempData["MensajeError"]',
+                    icon: "error"
+                });
+            };
+        </script>
+    }
+
 </body>
 </html>

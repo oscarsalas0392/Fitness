@@ -17,11 +17,7 @@ namespace fitness.Controllers
         public IActionResult Index()
         {
             int? id = HttpContext.Session.GetInt32("usuario");
-            if (id is  null)
-            {
-                return RedirectToAction("Index", "Acceso");
-            }
-            return View();
+            return View(id);
         }
 
         public IActionResult Privacy()

@@ -14,7 +14,7 @@ namespace Fitness.Notificacion
             _accion = accion;
             _excepcion = excepcion;
 
-            if (estado)
+            if (estado && !_excepcion)
             {
                 mensaje = Mensajes.READY;
                 return;

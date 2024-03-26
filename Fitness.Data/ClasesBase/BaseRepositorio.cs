@@ -26,12 +26,13 @@ namespace Fitness.Data
         {
             try
             {
-                if (_db is null) { return new Notificacion<T>(true, Accion.actualizar, true); }
+                if (_db is null) { return new Notificacion<T>(true, Accion.agregar, true); }
                 await _db.Set<T>().AddAsync(model);
                 int resultado = await _db.SaveChangesAsync();
                 bool blnResultado = resultado == 1 ? true : false;
 
                 Notificacion<T> notificacion = new Notificacion<T>(blnResultado, Accion.agregar);
+                notificacion.objecto = model;
                 return notificacion;
 
             }

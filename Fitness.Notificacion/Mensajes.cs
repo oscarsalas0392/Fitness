@@ -15,14 +15,16 @@ namespace Fitness.Notificacion
             {
                 id = 1,
                 nivel = Nivel.Information,
-                titulo = "La acción se ejecutó satisfactoriamente."
+                titulo = "",
+                Descripcion = "La acción se ejecutó satisfactoriamente."
             };
 
             public static Mensaje EXCEPTION = new Mensaje()
             {
                 id = 2,
                 nivel = Nivel.Exception,
-                titulo = "Se ha presentado una excepción."
+                titulo = "",
+                Descripcion = "Se ha presentado un error, vuelva a intertarlo o comuniquese con el administrador del sitio web"
             };
 
             public static Mensaje CONCURRENCY_DELETE = new Mensaje()
@@ -48,6 +50,25 @@ namespace Fitness.Notificacion
                 titulo = "El dato solicitado no existe.",
                 Descripcion = "La acción intentó afectar datos que no existen."
             };
-        
+
+        public static Mensaje EXISTS_USERNAME = new Mensaje()
+        {
+            id = 5,
+            nivel = Nivel.Warning,
+            titulo = "El dato solicitado no existe.",
+            Descripcion = "El nombre de usuario ya existe, por favor digite uno nuevo"
+        };
+
+
+        public static Mensaje EXISTS_EMAIL = new Mensaje()
+        {
+            id = 5,
+            nivel = Nivel.Warning,
+            titulo = "El dato solicitado no existe.",
+            Descripcion = "El email  ya existe, por favor digite uno nuevo"
+        };
+
+
+
     }
 }

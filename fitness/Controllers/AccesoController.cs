@@ -5,7 +5,11 @@ using Fitness.Model.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Fitness.Notificacion;
-
+using Fitness.ViewModels;
+using System.Security.Cryptography;
+using System.Text;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Fitness.Controllers
 {
@@ -13,14 +17,18 @@ namespace Fitness.Controllers
     {
 
         private readonly FTContext _context;
-        private readonly IRepositorio<Usuario, int?> _cR;
-        private readonly UsuarioRepositorio _cR2;
-
-        public AccesoController(FTContext context, IRepositorio<Usuario, int?> cR, UsuarioRepositorio cR2)
+        private readonly UsuarioRepositorio _cRU;
+        private readonly IRepositorio<Genero, int?> _cRG;
+        private readonly IRepositorio<TipoPeso, int?> _cRP;
+        private readonly IRepositorio<TipoAltura, int?> _cRA;
+    
+        public AccesoController(FTContext context, UsuarioRepositorio cRU, IRepositorio<Genero, int?> cRG, IRepositorio<TipoPeso, int?> cRP, IRepositorio<TipoAltura, int?> cRA)
         {
             _context = context;
-            _cR = cR;
-            _cR2 = cR2;
+            _cRU = cRU;
+            _cRG= cRG;
+            _cRP= cRP;
+            _cRA= cRA;
         }
         public IActionResult Login()
         {
@@ -31,18 +39,31 @@ namespace Fitness.Controllers
             }
             return View();
         }
-
-
-        public ActionResult Registrar()
+        public async Task<List<Genero>> obtenerListaGenero()
         {
-            return View();
+            Notificacion<Genero> notiGenero = await _cRG.ObtenerLista();
+
+            if (notiGenero is not null && notiGenero.lista is not null)
+            {
+                return notiGenero.lista.ToList();
+            }
+            else 
+            { 
+                return new List<Genero>();
+            }
+  
+        }
+        public async Task<ActionResult> Registrar()
+        {
+            RegistrarViewModel registrarViewModel = new RegistrarViewModel();
+            registrarViewModel.lstGenero = await obtenerListaGenero();
+            return View(registrarViewModel);
         }
 
         [HttpPost]
         public async  Task<ActionResult> Login(Usuario oUsuario)
         {
-
-           Notificacion<Usuario> notificacion =  await _cR2.ValidarUsuario(oUsuario.Correo,oUsuario.NombreUsuario,oUsuario.Contrasena);
+           Notificacion<Usuario> notificacion =  await _cRU.ValidarUsuario(oUsuario.Correo,oUsuario.NombreUsuario,oUsuario.Contrasena);
            Usuario? usuario = notificacion.objecto;
 
          if(usuario is null)
@@ -50,9 +71,10 @@ namespace Fitness.Controllers
               TempData["MensajeError"]= "El usuario o la contraseña no son correctos";
          }
 
-         else 
+         else
          {
-                HttpContext.Session.SetInt32("usuario", usuario.Id);
+
+                HttpContext.Session.SetString("usuario", JsonConvert.SerializeObject(notificacion.objecto));
                 return RedirectToAction("Index", "Home");
          }
 
@@ -60,10 +82,27 @@ namespace Fitness.Controllers
         }
 
         [HttpPost]
-        public ActionResult Registrar(Usuario oUsuario)
+        public async Task<ActionResult> Registrar(Usuario oUsuario)
         {
-            HttpContext.Session.SetInt32("usuario", oUsuario.Id);
-            return View();
+            Notificacion<Usuario> notificacion = await _cRU.Guardar(oUsuario);
+
+            if (!notificacion._estado ||  notificacion._excepcion || notificacion.objecto is null)
+            {
+                TempData["MensajeError"] = notificacion.mensaje.Descripcion;
+            }
+            else 
+            {
+
+                HttpContext.Session.SetString("usuario", JsonConvert.SerializeObject(notificacion.objecto));
+                return RedirectToAction("Index", "Home");
+            }
+
+            RegistrarViewModel registrarViewModel = new RegistrarViewModel();
+            registrarViewModel.lstGenero = await obtenerListaGenero();
+            registrarViewModel.usuario = oUsuario;
+            return View(registrarViewModel);
         }
+
+        
     }
 }

@@ -1,4 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@using Fitness.Model.Models
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    Usuario usuario = JsonConvert.DeserializeObject<Usuario>(HttpContextAccessor.HttpContext.Session.GetString("usuario"));
+}
+
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -26,11 +37,15 @@
                                 Mantenimientos generales
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TipoComida" asp-action="Index">Tipo Comida</a>                    
+                                <a class="nav-link text-dark" asp-controller="TipoComida" asp-action="Index">Tipo Comida</a>
                             </div>
                         </li>              
                     </ul>
                 </div>
+
+                <button >
+                    <a class="nav-link text-dark" asp-route-id="@usuario?.Id" asp-controller="Usuario" asp-action="Edit">Usuario</a>
+                </button>
             </div>
         </nav>
     </header>
