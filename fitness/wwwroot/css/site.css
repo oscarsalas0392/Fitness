@@ -70,3 +70,8 @@ body {
     display: flex;
     gap: .5rem;
 }
+
+.minutos {
+    display: flex;
+    align-items: center;
+}
