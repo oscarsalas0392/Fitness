@@ -37,17 +37,16 @@ namespace Fitness.Data.ClasesRepository
             Usuario usuario = new Usuario() {
                 NombreUsuario = model.NombreUsuario,
                 Correo = model.Correo,
-                Contrasena = model.Contrasena,
+                Contrasena = DecryptAndEncrypt.EncryptStringAES(model.Contrasena),
                 Nombre = model.Nombre,
                 FechaNacimiento = model.FechaNacimiento,
                 Altura= 0,
                 Peso =  0,
                 Genero = model.Genero
             };
-            usuario.Contrasena = DecryptAndEncrypt.EncryptStringAES(usuario.Contrasena);
+          
             List<Usuario> validaciones = _db.Usuario.Where(x => x.Correo == model.Correo || x.NombreUsuario == model.NombreUsuario).ToList();
             Notificacion<Usuario> notificacion = new Notificacion<Usuario>(false,Accion.agregar);
-
 
             if (validaciones.Exists(x => x.Correo == model.Correo))
             {
@@ -60,7 +59,7 @@ namespace Fitness.Data.ClasesRepository
                 return notificacion;
             }
 
-            return await base.Guardar(model);
+            return await base.Guardar(usuario);
         }
     }
 }

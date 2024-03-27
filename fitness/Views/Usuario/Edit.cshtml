@@ -1,4 +1,6 @@
-﻿@model Fitness.Model.Models.Usuario
+﻿@using Fitness.Model.Models
+@using Fitness.ViewModels;
+@model RegistrarViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -10,51 +12,62 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="@Model.usuario.Id" />
             <div class="form-group">
-                <label asp-for="NombreUsuario" class="control-label">Usuario</label>
-                <input asp-for="NombreUsuario" class="form-control" />
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+                <div class="content_photoEdit">
+                    <img class="photoEdit" src="@Model.usuario?.Foto" />
+                    <input type="file" class="inputEditPhoto" name="photo" />
+                </div>           
             </div>
             <div class="form-group">
-                <label asp-for="Correo" class="control-label"></label>
-                <input asp-for="Correo" class="form-control" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
+                <label asp-for="@Model.usuario.NombreUsuario" class="control-label">Usuario</label>
+                <input asp-for="@Model.usuario.NombreUsuario" class="form-control" />
+                <span asp-validation-for="@Model.usuario.NombreUsuario" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.usuario.Correo" class="control-label"></label>
+                <input asp-for="@Model.usuario.Correo" class="form-control" />
+                <span asp-validation-for="@Model.usuario.Correo" class="text-danger"></span>
             </div>
  
             <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
+                <label asp-for="@Model.usuario.Nombre" class="control-label"></label>
+                <input asp-for="@Model.usuario.Nombre" class="form-control" />
+                <span asp-validation-for="@Model.usuario.Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FechaNacimiento" class="control-label">Fecha de Nacimiento</label>
-                <input asp-for="FechaNacimiento" class="form-control" />
-                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                <label asp-for="@Model.usuario.FechaNacimiento" class="control-label">Fecha de Nacimiento</label>
+                <input asp-for="@Model.usuario.FechaNacimiento" class="form-control" />
+                <span asp-validation-for="@Model.usuario.FechaNacimiento" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Altura" class="control-label"></label>
-                <input asp-for="Altura" class="form-control" />
-                <span asp-validation-for="Altura" class="text-danger"></span>
+                <label asp-for="@Model.usuario.Altura" class="control-label"></label>
+                <input class="form-control" type="number" asp-for="@Model.usuario.Altura" asp-validation-for="@Model.usuario.Altura" min="0" value="@Model.usuario.Altura.ToString().Replace(",",".")" step=".01">
             </div>
             <div class="form-group">
-                <label asp-for="Peso" class="control-label"></label>
-                <input asp-for="Peso" class="form-control" />
-                <span asp-validation-for="Peso" class="text-danger"></span>
+                <label asp-for="@Model.usuario.Peso" class="control-label"></label>  
+                <input class="form-control" type="number" asp-for="@Model.usuario.Peso" asp-validation-for="@Model.usuario.Peso" min="0" value="@Model.usuario.Peso.ToString().Replace(",",".")" step=".01">
             </div>
             <div class="form-group">
-                <label asp-for="Genero" class="control-label"></label>
-                <input asp-for="Genero" class="form-control" />
-                <span asp-validation-for="Genero" class="text-danger"></span>
+                <label asp-for="@Model.usuario.Genero" class="control-label"></label>
+                <select asp-for="@Model.usuario.Genero" asp-validation-for="@Model.usuario.Peso" required class="form-control">
+                    @foreach (Genero genero in Model.lstGenero)
+                    {
+                        if (Model.usuario.Genero == genero.Id)
+                        {
+                            <option selected value="@genero.Id">@genero.Descripcion</option>
+                        }
+                        else
+                        {
+                            <option value="@genero.Id">@genero.Descripcion</option>
+                        }                     
+                    }
+                </select>
+         
             </div>
-            <div class="form-group">
-                <label asp-for="Foto" class="control-label"></label>
-                <input asp-for="Foto" class="form-control" />
-                <span asp-validation-for="Foto" class="text-danger"></span>
-            </div>
-     
+
             <div class="form-group">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>

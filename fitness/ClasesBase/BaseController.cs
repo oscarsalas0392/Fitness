@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Fitness.Model.Models;
+using Fitness.Notificacion;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 
 namespace Fitness.ClasesBase
 {
@@ -7,8 +10,23 @@ namespace Fitness.ClasesBase
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            int? id = HttpContext.Session.GetInt32("usuario");
-            if (id is null)
+            try
+            {
+                string? json = HttpContext.Session.GetString("usuario");
+                if (json == null)
+                {
+                    context.Result = RedirectToAction("Index", "Acceso");
+                    return;
+                }
+
+                Usuario? usuario = JsonConvert.DeserializeObject<Usuario>(json);
+
+                if (usuario is null)
+                {
+                    context.Result = RedirectToAction("Index", "Acceso");
+                }
+            }
+            catch 
             {
                 context.Result = RedirectToAction("Index", "Acceso");
             }
