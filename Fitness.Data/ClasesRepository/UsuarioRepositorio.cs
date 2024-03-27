@@ -34,15 +34,19 @@ namespace Fitness.Data.ClasesRepository
         }
         public override async Task<Notificacion<Usuario>> Guardar(Usuario model)
         {
-            Usuario usuario = new Usuario() {
+            Usuario usuario = new Usuario() 
+            {
                 NombreUsuario = model.NombreUsuario,
                 Correo = model.Correo,
                 Contrasena = DecryptAndEncrypt.EncryptStringAES(model.Contrasena),
                 Nombre = model.Nombre,
                 FechaNacimiento = model.FechaNacimiento,
                 Altura= 0,
+                TipoAltura = 1,
+                TipoPeso = 1,
                 Peso =  0,
                 Genero = model.Genero
+
             };
           
             List<Usuario> validaciones = _db.Usuario.Where(x => x.Correo == model.Correo || x.NombreUsuario == model.NombreUsuario).ToList();

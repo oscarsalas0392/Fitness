@@ -2,28 +2,49 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class MetaSalud
 {
+    [Key]
     public int Id { get; set; }
 
     public int Usuario { get; set; }
 
     public int TipoMeta { get; set; }
 
+    [Column(TypeName = "decimal(5, 2)")]
     public decimal PesoObjectivo { get; set; }
 
+    public int TipoPeso { get; set; }
+
+    [Column(TypeName = "datetime")]
     public DateTime FechaObjectivo { get; set; }
 
+    [Required]
+    [StringLength(500)]
+    [Unicode(false)]
     public string NivelActividad { get; set; }
 
+    [StringLength(500)]
+    [Unicode(false)]
     public string OjectivoEspecifico { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    [ForeignKey("TipoMeta")]
+    [InverseProperty("MetaSalud")]
     public virtual TipoMeta TipoMetaNavigation { get; set; }
 
+    [ForeignKey("TipoPeso")]
+    [InverseProperty("MetaSalud")]
+    public virtual TipoPeso TipoPesoNavigation { get; set; }
+
+    [ForeignKey("Usuario")]
+    [InverseProperty("MetaSalud")]
     public virtual Usuario UsuarioNavigation { get; set; }
 }

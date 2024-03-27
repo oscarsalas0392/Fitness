@@ -2,28 +2,40 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class Dieta
 {
+    [Key]
     public int Id { get; set; }
 
     public int Usuario { get; set; }
 
+    [Column(TypeName = "datetime")]
     public DateTime? Fecha { get; set; }
 
     public int TipoComida { get; set; }
 
     public int Calorias { get; set; }
 
+    [StringLength(500)]
+    [Unicode(false)]
     public string Comentarios { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    [InverseProperty("DietaNavigation")]
     public virtual ICollection<AlimentoConsumido> AlimentoConsumido { get; set; } = new List<AlimentoConsumido>();
 
+    [ForeignKey("TipoComida")]
+    [InverseProperty("Dieta")]
     public virtual TipoComida TipoComidaNavigation { get; set; }
 
+    [ForeignKey("Usuario")]
+    [InverseProperty("Dieta")]
     public virtual Usuario UsuarioNavigation { get; set; }
 }

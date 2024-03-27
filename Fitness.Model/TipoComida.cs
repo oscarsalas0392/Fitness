@@ -2,16 +2,23 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class TipoComida
 {
+    [Key]
     public int Id { get; set; }
 
+    [StringLength(50)]
+    [Unicode(false)]
     public string Descripcion { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    [InverseProperty("TipoComidaNavigation")]
     public virtual ICollection<Dieta> Dieta { get; set; } = new List<Dieta>();
 }

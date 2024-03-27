@@ -2,11 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class ActividadFisica
 {
+    [Key]
     public int Id { get; set; }
 
     public int Usuario { get; set; }
@@ -15,15 +19,28 @@ public partial class ActividadFisica
 
     public int Duracion { get; set; }
 
+    [Column(TypeName = "decimal(5, 2)")]
     public decimal? Distancia { get; set; }
+
+    public int? TipoDistancia { get; set; }
 
     public int Calorias { get; set; }
 
+    [StringLength(500)]
+    [Unicode(false)]
     public string Comentarios { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    [ForeignKey("TipoActividadFisica")]
+    [InverseProperty("ActividadFisica")]
     public virtual TipoActividadFisica TipoActividadFisicaNavigation { get; set; }
 
+    [ForeignKey("TipoDistancia")]
+    [InverseProperty("ActividadFisica")]
+    public virtual TipoDistancia TipoDistanciaNavigation { get; set; }
+
+    [ForeignKey("Usuario")]
+    [InverseProperty("ActividadFisica")]
     public virtual Usuario UsuarioNavigation { get; set; }
 }

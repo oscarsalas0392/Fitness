@@ -2,18 +2,32 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class BitacoraPeso
 {
+    [Key]
     public int Id { get; set; }
 
     public int Usuario { get; set; }
 
+    [Column(TypeName = "decimal(5, 2)")]
     public decimal Peso { get; set; }
 
+    public int TipoPeso { get; set; }
+
+    [Column(TypeName = "datetime")]
     public DateTime Fecha { get; set; }
 
+    [ForeignKey("TipoPeso")]
+    [InverseProperty("BitacoraPeso")]
+    public virtual TipoPeso TipoPesoNavigation { get; set; }
+
+    [ForeignKey("Usuario")]
+    [InverseProperty("BitacoraPeso")]
     public virtual Usuario UsuarioNavigation { get; set; }
 }

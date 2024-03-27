@@ -61,3 +61,8 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.content_Peso {
+    display: flex;
+    gap: .5rem;
+}

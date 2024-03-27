@@ -12,6 +12,8 @@ using Fitness.Data.Interfaces;
 using Fitness.Notificacion;
 using Newtonsoft.Json;
 using Fitness.ViewModels;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Globalization;
 
 namespace Fitness.Controllers
 {
@@ -21,27 +23,47 @@ namespace Fitness.Controllers
         private readonly FTContext _context;
         private readonly IRepositorio<Usuario, int?> _cR;
         private readonly IRepositorio<Genero, int?> _cRG;
-
-        public UsuarioController(FTContext context, IRepositorio<Usuario, int?> cR, IRepositorio<Genero, int?> cRG)
+        private readonly IRepositorio<TipoPeso, int?> _cRTP;
+        private readonly IRepositorio<TipoAltura, int?> _cRTA;
+        public UsuarioController(FTContext context, IRepositorio<Usuario, int?> cR, IRepositorio<Genero, int?> cRG, IRepositorio<TipoPeso, int?> cRTP, IRepositorio<TipoAltura, int?> cRTA)
         {
             _context = context;
             _cR = cR;
             _cRG = cRG;
+            _cRTP = cRTP;
+            _cRTA = cRTA;
         }
 
         public async Task<List<Genero>> obtenerListaGenero()
         {
-            Notificacion<Genero> notiGenero = await _cRG.ObtenerLista();
-
-            if (notiGenero is not null && notiGenero.lista is not null)
+            Notificacion<Genero> notificacion = await _cRG.ObtenerLista();
+            if (notificacion is not null && notificacion.lista is not null)
             {
-                return notiGenero.lista.ToList();
+                return notificacion.lista.ToList();
             }
-            else
+            return new List<Genero>();       
+        }
+
+        public async Task<List<TipoPeso>> obtenerListaPeso()
+        {
+            Notificacion<TipoPeso> notificacion = await _cRTP.ObtenerLista();
+            if (notificacion is not null && notificacion.lista is not null)
             {
-                return new List<Genero>();
+                return notificacion.lista.ToList();
             }
 
+             return new List<TipoPeso>();
+        }
+
+        public async Task<List<TipoAltura>> obtenerListaAltura()
+        {
+            Notificacion<TipoAltura> notificacion = await _cRTA.ObtenerLista();
+            if (notificacion is not null && notificacion.lista is not null)
+            {
+                return notificacion.lista.ToList();
+            }
+
+            return new List<TipoAltura>();
         }
         // GET: Usuario/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -55,7 +77,8 @@ namespace Fitness.Controllers
             RegistrarViewModel viewModel = new RegistrarViewModel();
             viewModel.usuario = notificacion.objecto;
             viewModel.lstGenero = await obtenerListaGenero();
-
+            viewModel.lstPeso = await obtenerListaPeso();
+            viewModel.lstAltura = await obtenerListaAltura();
             return View(viewModel);
         }
 
@@ -64,7 +87,7 @@ namespace Fitness.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUsuario,Correo,Nombre,FechaNacimiento,Altura,Peso,Genero,Foto")] Usuario usuario, IFormFile? photo= null)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NombreUsuario,Correo,Nombre,FechaNacimiento,Altura,Peso,Genero,TipoPeso,TipoAltura,Foto")] Usuario usuario, IFormFile? photo= null)
         {
             if (id != usuario.Id)
             {
@@ -72,6 +95,9 @@ namespace Fitness.Controllers
             }
             RegistrarViewModel viewModel = new RegistrarViewModel();
             viewModel.lstGenero = await obtenerListaGenero();
+            viewModel.lstPeso = await obtenerListaPeso();
+            viewModel.lstAltura = await obtenerListaAltura();
+
             string? json = HttpContext.Session.GetString("usuario");
             Usuario? usuarioSession = JsonConvert.DeserializeObject<Usuario>(json);
 
@@ -79,7 +105,8 @@ namespace Fitness.Controllers
             {
                 usuario.Foto = usuarioSession.Foto;
             }
-            
+            usuario.Contrasena = usuarioSession.Contrasena;
+            ModelState.Remove("usuario.Contrasena");
             if (ModelState.IsValid)
             {
                 if (photo != null)
@@ -95,7 +122,7 @@ namespace Fitness.Controllers
                 }
 
                
-                usuario.Contrasena = usuarioSession.Contrasena;
+             
                 usuario.Eliminado = false;
                 usuario.Id = usuarioSession.Id;
 

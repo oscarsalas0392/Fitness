@@ -2,11 +2,15 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class AlimentoConsumido
 {
+    [Key]
     public int Id { get; set; }
 
     public int Dieta { get; set; }
@@ -15,7 +19,11 @@ public partial class AlimentoConsumido
 
     public int Opcion { get; set; }
 
+    [ForeignKey("Alimento")]
+    [InverseProperty("AlimentoConsumido")]
     public virtual Alimento AlimentoNavigation { get; set; }
 
+    [ForeignKey("Dieta")]
+    [InverseProperty("AlimentoConsumido")]
     public virtual Dieta DietaNavigation { get; set; }
 }

@@ -2,40 +2,76 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class Usuario
 {
+    [Key]
     public int Id { get; set; }
 
+    [Required]
+    [StringLength(50)]
+    [Unicode(false)]
     public string NombreUsuario { get; set; }
 
+    [Required]
+    [StringLength(50)]
+    [Unicode(false)]
     public string Correo { get; set; }
 
+    [Required]
+    [StringLength(500)]
     public string Contrasena { get; set; }
 
+    [Required]
+    [StringLength(50)]
+    [Unicode(false)]
     public string Nombre { get; set; }
 
+    [Column(TypeName = "datetime")]
     public DateTime FechaNacimiento { get; set; }
 
     public int Altura { get; set; }
 
+    public int TipoAltura { get; set; }
+
+    [Column(TypeName = "decimal(5, 2)")]
     public decimal Peso { get; set; }
+
+    public int TipoPeso { get; set; }
 
     public int Genero { get; set; }
 
+    [Unicode(false)]
     public string Foto { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    [InverseProperty("UsuarioNavigation")]
     public virtual ICollection<ActividadFisica> ActividadFisica { get; set; } = new List<ActividadFisica>();
 
+    [InverseProperty("UsuarioNavigation")]
     public virtual ICollection<BitacoraPeso> BitacoraPeso { get; set; } = new List<BitacoraPeso>();
 
+    [InverseProperty("UsuarioNavigation")]
     public virtual ICollection<Dieta> Dieta { get; set; } = new List<Dieta>();
 
+    [ForeignKey("Genero")]
+    [InverseProperty("Usuario")]
     public virtual Genero GeneroNavigation { get; set; }
 
+    [InverseProperty("UsuarioNavigation")]
     public virtual ICollection<MetaSalud> MetaSalud { get; set; } = new List<MetaSalud>();
+
+    [ForeignKey("TipoAltura")]
+    [InverseProperty("Usuario")]
+    public virtual TipoAltura TipoAlturaNavigation { get; set; }
+
+    [ForeignKey("TipoPeso")]
+    [InverseProperty("Usuario")]
+    public virtual TipoPeso TipoPesoNavigation { get; set; }
 }

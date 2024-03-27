@@ -2,16 +2,23 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fitness.Model.Models;
 
 public partial class TipoMeta
 {
+    [Key]
     public int Id { get; set; }
 
+    [StringLength(100)]
+    [Unicode(false)]
     public string Descripcion { get; set; }
 
     public bool? Eliminado { get; set; }
 
+    [InverseProperty("TipoMetaNavigation")]
     public virtual ICollection<MetaSalud> MetaSalud { get; set; } = new List<MetaSalud>();
 }

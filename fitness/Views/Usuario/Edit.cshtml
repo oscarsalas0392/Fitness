@@ -44,11 +44,41 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.usuario.Altura" class="control-label"></label>
-                <input class="form-control" type="number" asp-for="@Model.usuario.Altura" asp-validation-for="@Model.usuario.Altura" min="0" value="@Model.usuario.Altura.ToString().Replace(",",".")" step=".01">
+                <div class="content_Peso">
+                    <input class="form-control col" type="number" asp-for="@Model.usuario.Altura" asp-validation-for="@Model.usuario.Altura" min="0" value="@Model.usuario.Altura.ToString().Replace(",",".")" step=".01">
+                    <select asp-for="@Model.usuario.TipoAltura" asp-validation-for="@Model.usuario.TipoAltura" required class="form-control col">
+                        @foreach (TipoAltura tipoAltura in Model.lstAltura)
+                        {
+                            if (Model.usuario.TipoAltura == tipoAltura.Id)
+                            {
+                                <option selected value="@tipoAltura.Id">@tipoAltura.Descripcion</option>
+                            }
+                            else
+                            {
+                                <option value="@tipoAltura.Id">@tipoAltura.Descripcion</option>
+                            }
+                        }
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.usuario.Peso" class="control-label"></label>  
-                <input class="form-control" type="number" asp-for="@Model.usuario.Peso" asp-validation-for="@Model.usuario.Peso" min="0" value="@Model.usuario.Peso.ToString().Replace(",",".")" step=".01">
+                <label asp-for="@Model.usuario.Peso" class="control-label"></label>
+                <div class="content_Peso">
+                    <input class="form-control" type="number" asp-for="@Model.usuario.Peso" asp-validation-for="@Model.usuario.Peso" min="0" value="@Model.usuario.Peso.ToString().Replace(",",".")" step=".01">
+                    <select asp-for="@Model.usuario.TipoPeso" asp-validation-for="@Model.usuario.TipoPeso" required class="form-control">
+                        @foreach (TipoPeso tipoPeso in Model.lstPeso)
+                        {
+                            if (Model.usuario.TipoPeso == tipoPeso.Id)
+                            {
+                                <option selected value="@tipoPeso.Id">@tipoPeso.Descripcion</option>
+                            }
+                            else
+                            {
+                                <option value="@tipoPeso.Id">@tipoPeso.Descripcion</option>
+                            }
+                        }
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="@Model.usuario.Genero" class="control-label"></label>
