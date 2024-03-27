@@ -27,6 +27,10 @@ namespace Fitness.Data
             try
             {
                 if (_db is null) { return new Notificacion<T>(true, Accion.agregar, true); }
+
+                PropertyInfo propertyInfo = model.GetType().GetProperty("Eliminado");
+                propertyInfo.SetValue(model, false);
+
                 await _db.Set<T>().AddAsync(model);
                 int resultado = await _db.SaveChangesAsync();
                 bool blnResultado = resultado == 1 ? true : false;
@@ -48,6 +52,10 @@ namespace Fitness.Data
             try
             {
                 if (_db is null) { return new Notificacion<T>(true, Accion.actualizar,true); }
+
+                PropertyInfo propertyInfo = model.GetType().GetProperty("Eliminado");
+                propertyInfo.SetValue(model, false);
+
                 _db.Set<T>().Update(model);
                 int resultado = await _db.SaveChangesAsync();
                 bool blnResultado = resultado == 1 ? true : false;

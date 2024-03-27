@@ -1,11 +1,13 @@
 ﻿@using Fitness.ViewModels;
-@model TipoComidaIndexViewModel
+@using Fitness.Model.Models;
+@using Fitness.Data.ClasesRepository;
+@model IndexViewModel<ActividadFisica,ActividadFisicaRepositorio,int?>
 
 @{
-    ViewData["Title"] = "Tipos de Comida";
+    ViewData["Title"] = "Actividades Fisicas";
 }
 
-<h1>Tipos de Comida</h1>
+<h1>Actividades Fisicas</h1>
 
 <p>
     <a asp-action="Create">Agregar</a>
@@ -17,7 +19,7 @@
     <div class="d-flex flex-column">
         <div>
             <input id="command" asp-for="Command" type="hidden" />
-            <input asp-for="filtro.Descripcion" placeholder="Search here ..." />
+            <input asp-for="filtro.Descripcion" placeholder="Buscar aquí ..." />
             <input id="page" asp-for="paginacion.numeroPagina" type="hidden" />
             <input id="sort" asp-for="paginacion.columnaOrdenar" type="hidden" />
             <input id="sortdir" asp-for="paginacion.tipoOrdernar" type="hidden" />
@@ -27,7 +29,16 @@
             <thead>
                 <tr>
                     <th>
-                        Descripción
+                        Nombre
+                    </th>
+                    <th>
+                        Fecha
+                    </th>
+                    <th>
+                        Duración(minutos)
+                    </th>
+                    <th>
+                        Distancia
                     </th>
                     <th>
                         Calorías
@@ -40,10 +51,9 @@
                 await Html.RenderPartialAsync("IndexTable");
              }
         </table>
-   </div>
+    </div>
 
- </form>
-
+</form>
 
 <script>
     (function enableGrid(main, params, ajax = false, el = '', process = '') {
@@ -71,7 +81,7 @@
                 });
             });
         }
-
+   
         bindParams(main, params); // Enlazar los parámetros de la interfaz
 
         let form = document.querySelector(main);
@@ -82,6 +92,7 @@
             form.addEventListener('submit', async (event) => {
                 event.preventDefault();
 
+                console.log("entro");
                 // Determinar la porción a actualizar
                 const nodes = document.querySelectorAll(`${main} ${el}`);
                 //console.log(nodes);
@@ -100,7 +111,7 @@
                     //console.log(fd);
 
                     const response = await fetch(window.location.href, { method: 'post', headers: { 'X-Requested-With': 'fetch' }, body: fd });
-                    //console.log(response);
+                    console.log(response);
 
                     if (response.ok) {
                         let text = await response.text();

@@ -39,7 +39,11 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="nav-link text-dark" asp-controller="TipoComida" asp-action="Index">Tipo Comida</a>
                             </div>
-                        </li>              
+                        </li> 
+                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="ActividadFisica" asp-action="Index">Actividades Fisicas</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -54,9 +58,7 @@
                         else
                         {
                             <img class="photoUser" src="@usuario.Foto">
-                        }
-
-          
+                        }       
                     </a>
                 </button>
             </div>

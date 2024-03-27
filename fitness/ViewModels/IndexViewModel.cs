@@ -1,21 +1,24 @@
 ﻿using Fitness.Data;
 using Fitness.Data.ClasesRepository;
+using Fitness.Data.Interfaces;
 using Fitness.Model.Models;
 using Fitness.Notificacion;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Fitness.ViewModels
 {
-    public class TipoComidaIndexViewModel
+    public class IndexViewModel<T,TR,TK> where T: class where TR : BaseRepositorio<T,TK>
     {
-        TipoComidaRepositorio? _cR;
+        TR? _cR ;
         public string Command { get; set; } = "list";
         public TipoComida filtro { get; set; } = new TipoComida();
-        public IEnumerable<TipoComida> Items { get; set; } = new List<TipoComida>();
-        public Filtro paginacion { get; set; } = new Filtro() { columnaOrdenar = "Descripcion" };
+        public IEnumerable<T> Items { get; set; } = new List<T>();
+        public Filtro paginacion { get; set; } = new Filtro() { columnaOrdenar = "Descripcion", columnaBuscar= "Descripcion" };
 
-        public async Task HandleRequest(TipoComidaRepositorio cR)
+        public async Task HandleRequest(TR cR, string columnaOrdenar = "Descripcion", string columnaBuscar = "Descripcion")
         {
+            paginacion.columnaBuscar = columnaBuscar;
+            paginacion.columnaOrdenar = columnaOrdenar;
             _cR = cR;
 
             switch (Command)
@@ -35,7 +38,8 @@ namespace Fitness.ViewModels
 
         async Task list()
         {
-            Notificacion<TipoComida> notificacion = await _cR.ObtenerLista(paginacion);
+         
+            Notificacion<T> notificacion = await _cR.ObtenerLista(paginacion);
             if(notificacion.lista != null) 
             {
                 Items= notificacion.lista;
@@ -44,8 +48,7 @@ namespace Fitness.ViewModels
 
         async Task search()
         {
-            paginacion.columnaBuscar = "Descripcion";
-            Notificacion<TipoComida> notificacion = await _cR.Buscar(filtro.Descripcion, paginacion);
+            Notificacion<T> notificacion = await _cR.Buscar(filtro.Descripcion, paginacion);
             if (notificacion.lista != null)
             {
                 Items = notificacion.lista;

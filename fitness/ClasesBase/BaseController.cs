@@ -8,6 +8,22 @@ namespace Fitness.ClasesBase
 {
     public class BaseController :  Controller
     {
+        public Usuario sUsuario() 
+        {
+            string? json = HttpContext.Session.GetString("usuario");
+
+            if (json != null)
+            {
+                Usuario? usuario = JsonConvert.DeserializeObject<Usuario>(json);
+
+                if (usuario is null)
+                {
+                    return new Usuario();
+                }
+                return usuario;
+            }
+            return new Usuario();
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             try

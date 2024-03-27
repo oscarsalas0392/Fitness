@@ -17,6 +17,9 @@ public partial class ActividadFisica
 
     public int TipoActividadFisica { get; set; }
 
+    [Column(TypeName = "datetime")]
+    public DateTime Fecha { get; set; }
+
     public int Duracion { get; set; }
 
     [Column(TypeName = "decimal(5, 2)")]

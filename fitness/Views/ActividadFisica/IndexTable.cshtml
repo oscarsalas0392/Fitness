@@ -1,14 +1,30 @@
-﻿<tbody id="result">
+﻿@using Fitness.ViewModels;
+@using Fitness.Model.Models;
+@using Fitness.Data.ClasesRepository;
+@model IndexViewModel<ActividadFisica,ActividadFisicaRepositorio,int?>
+
+
+
+<tbody id="result">
     @foreach (var item in Model.Items)
     {
         <tr>
             <td>
-                @item.Descripcion
+                @((ViewBag.TipoActividadFisica as SelectList).Where(x=> x.Value == item.Id.ToString()).FirstOrDefault().Text)
+            </td>
+            <td>
+                @item.Fecha
+            </td>
+            <td>
+                @item.Duracion
+            </td>
+            <td>
+                @item.Distancia
             </td>
             <td>
                 @item.Calorias
             </td>
-   
+
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
