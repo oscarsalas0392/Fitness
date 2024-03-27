@@ -3,12 +3,11 @@
 @model RegistrarViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Usuario";
 }
 
-<h1>Edit</h1>
 
-<h4>Usuario</h4>
+<h4>Editar Usuario</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,8 +16,16 @@
             <input type="hidden" asp-for="@Model.usuario.Id" />
             <div class="form-group">
                 <div class="content_photoEdit">
-                    <img class="photoEdit" src="@Model.usuario?.Foto" />
-                    <input type="file" class="inputEditPhoto" name="photo" />
+                    @if (@Model.usuario?.Foto != null)
+                    {
+                        <img class="photoEdit" id="photoEdit" src="@Model.usuario?.Foto" />
+                    }
+                    else
+                    {
+                        <img class="photoEdit" id="photoEdit" src="../../images/person-circle.svg" />
+                    }
+
+                    <input id="picField" type="file" class="inputEditPhoto" name="photo" />
                 </div>           
             </div>
             <div class="form-group">
@@ -108,6 +115,28 @@
 <div>
     <a asp-action="Index" asp-controller="Home" >Regresar</a>
 </div>
+
+<script>
+    document.getElementById('picField').onchange = function (evt) {
+        var tgt = evt.target || window.event.srcElement,
+            files = tgt.files;
+
+        // FileReader support
+        if (FileReader && files && files.length) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                document.getElementById("photoEdit").src = fr.result;
+            }
+            fr.readAsDataURL(files[0]);
+        }
+
+        // Not supported
+        else {
+            // fallback -- perhaps submit the input to an iframe and temporarily store
+            // them on the server until the user's session ends.
+        }
+    }
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

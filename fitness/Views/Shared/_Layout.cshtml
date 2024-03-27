@@ -44,8 +44,19 @@
                 </div>
 
                 <button class="buttonPhoto">
+
+
                     <a class="aPhoto nav-link text-dark" asp-route-id="@usuario?.Id" asp-controller="Usuario" asp-action="Edit">
-                        <img class="photoUser" src="@usuario.Foto">
+                        @if (usuario.Foto == null)
+                        {
+                            <img class="photoUser" src="../images/person-circle.svg">
+                        }
+                        else
+                        {
+                            <img class="photoUser" src="@usuario.Foto">
+                        }
+
+          
                     </a>
                 </button>
             </div>

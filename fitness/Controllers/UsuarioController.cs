@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Fitness.ViewModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
+using Microsoft.AspNetCore.Http;
 
 namespace Fitness.Controllers
 {
@@ -135,6 +136,8 @@ namespace Fitness.Controllers
                     viewModel.usuario = usuario;
                     return View(viewModel);
                 }
+
+                HttpContext.Session.SetString("usuario", JsonConvert.SerializeObject(usuario));
                 return await Edit(usuario.Id);
             }
 
