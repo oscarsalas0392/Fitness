@@ -4,32 +4,38 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>ActividadFisica</h4>
+    <h4>Detalle de la Actividad Fisica</h4>
     <hr />
     <dl class="row">
+
+
+        <dt class="col-sm-2">
+            Nombre
+        </dt>
+        <dd class="col-sm-10">
+            @((ViewBag.TipoActividadFisica as SelectList).Where(x => x.Value == Model.Id.ToString()).FirstOrDefault().Text)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fecha)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fecha)
+            @Html.DisplayFor(model => model.Fecha) 
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Duracion)
+            Duración
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Duracion)
+            @Html.DisplayFor(model => model.Duracion) minutos
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Distancia)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Distancia)
+            @Html.DisplayFor(model => model.Distancia)   @((ViewBag.TipoDistancia as SelectList).Where(x => x.Value == Model.TipoDistancia.ToString()).FirstOrDefault().Text)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Calorias)
+            Calorías
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Calorias)
@@ -40,33 +46,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Comentarios)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Eliminado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Eliminado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoActividadFisicaNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoActividadFisicaNavigation.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TipoDistanciaNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TipoDistanciaNavigation.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UsuarioNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UsuarioNavigation.Contrasena)
-        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Regresar</a>
 </div>

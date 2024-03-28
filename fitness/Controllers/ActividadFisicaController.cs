@@ -33,7 +33,7 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Index(IndexViewModel<ActividadFisica, ActividadFisicaRepositorio, int?> vm)
         {
             ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion");
-            await vm.HandleRequest(_cR2,"Fecha", "TipoActividadFisica");
+            await vm.HandleRequest(_cR2,"Fecha", "TipoActividadFisica", Usuario().Id);
 
             if (Request.IsAjaxRequest())
             {
@@ -46,7 +46,8 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             Notificacion<ActividadFisica> notificacion = await _cR.ObtenerId(id);
-
+            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion");
+            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion");
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
@@ -70,7 +71,7 @@ namespace Fitness.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,TipoActividadFisica,Fecha,Duracion,Distancia,TipoDistancia,Calorias,Comentarios")] ActividadFisica actividadFisica)
         {
-            actividadFisica.Usuario = sUsuario().Id;
+            actividadFisica.Usuario = Usuario().Id;
             if (ModelState.IsValid)
             {
                 Notificacion<ActividadFisica> notificacion = await _cR.Guardar(actividadFisica);
@@ -107,7 +108,7 @@ namespace Fitness.Controllers
             {
                 return NotFound();
             }
-            actividadFisica.Usuario = sUsuario().Id;
+            actividadFisica.Usuario = Usuario().Id;
             if (ModelState.IsValid)
             {
                 Notificacion<ActividadFisica> notificacion = await _cR.Actualizar(actividadFisica);
@@ -131,7 +132,8 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             Notificacion<ActividadFisica> notificacion = await _cR.ObtenerId(id);
-
+            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion", notificacion.objecto.TipoActividadFisica);
+            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion");
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();

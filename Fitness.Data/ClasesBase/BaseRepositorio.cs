@@ -45,8 +45,6 @@ namespace Fitness.Data
                 return new Notificacion<T>(true, Accion.agregar, true);
             }
         }
-
-
         public virtual async Task<Notificacion<T>> Actualizar(T model)
         {
             try
@@ -69,7 +67,6 @@ namespace Fitness.Data
                 return new Notificacion<T>(true, Accion.actualizar, true);
             }
         }
-
         public virtual async Task<Notificacion<T>> ObtenerId(TK? key)
         {
 
@@ -88,18 +85,15 @@ namespace Fitness.Data
             }
  
         }
-
         public Task<IEnumerable<T>> Buscar(Expression<Func<T, bool>> predicate)
         {
             throw new NotImplementedException();
         }
-
         public void Dispose()
         {
             
         }
 
-  
         public virtual async Task<Notificacion<T>> ObtenerLista(Filtro? pFiltro = null)
         {
             try
@@ -109,14 +103,17 @@ namespace Fitness.Data
 
                 if (pFiltro == null)
                 {
-                    result = await _db.Set<T>().AsNoTracking().ToListAsync();
+                    result = await _db.Set<T>().Where($"Eliminado = false").AsNoTracking().ToListAsync();
                 }
                 else
                 {
-                    pFiltro.cantidadRegistros = await _db.Set<T>().CountAsync();
+                    pFiltro.cantidadRegistros = await _db.Set<T>()
+                        .Where($"Eliminado = false {(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")}")
+                        .CountAsync();
+
                     result = await _db.Set<T>().
                         AsNoTracking().
-                        Where($"Eliminado = false").
+                        Where($"Eliminado = false {(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")}").
                         OrderBy(pFiltro.Ordenando).
                         Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
                         Take(pFiltro.tamanoPagina).ToListAsync();

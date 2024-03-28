@@ -1,72 +1,62 @@
 ﻿@model Fitness.Model.Models.ActividadFisica
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Actividad Fisica";
 }
-
-<h1>Edit</h1>
-
-<h4>ActividadFisica</h4>
+<h4>Editar Actividad Fisica</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Usuario" class="control-label"></label>
-                <select asp-for="Usuario" class="form-control" asp-items="ViewBag.Usuario"></select>
-                <span asp-validation-for="Usuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TipoActividadFisica" class="control-label"></label>
+            <div class="form-group pt-3">
+                <label asp-for="TipoActividadFisica" class="control-label">Actividad Fisica</label>
                 <select asp-for="TipoActividadFisica" class="form-control" asp-items="ViewBag.TipoActividadFisica"></select>
-                <span asp-validation-for="TipoActividadFisica" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-2">
                 <label asp-for="Fecha" class="control-label"></label>
                 <input asp-for="Fecha" class="form-control" />
                 <span asp-validation-for="Fecha" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Duracion" class="control-label"></label>
-                <input asp-for="Duracion" class="form-control" />
-                <span asp-validation-for="Duracion" class="text-danger"></span>
+            <div class="form-group pt-3">
+
+                <label asp-for="Duracion" class="control-label">Duración</label>
+                <div class="content_Peso">
+                    <input asp-for="Duracion" class="form-control" />
+                    <span asp-validation-for="Duracion" class="text-danger"></span>
+                    <span class="minutos">Minutos</span>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
+
                 <label asp-for="Distancia" class="control-label"></label>
-                <input asp-for="Distancia" class="form-control" />
-                <span asp-validation-for="Distancia" class="text-danger"></span>
+                <div class="content_Peso">
+                    <input asp-for="Distancia" class="form-control" />
+                    <span asp-validation-for="Distancia" class="text-danger"></span>
+                    <select asp-for="TipoDistancia" class="form-control" asp-items="ViewBag.TipoDistancia"></select>
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="TipoDistancia" class="control-label"></label>
-                <select asp-for="TipoDistancia" class="form-control" asp-items="ViewBag.TipoDistancia"></select>
-                <span asp-validation-for="TipoDistancia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Calorias" class="control-label"></label>
+            <div class="form-group pt-3">
+                <label asp-for="Calorias" class="control-label">Calorías</label>
                 <input asp-for="Calorias" class="form-control" />
                 <span asp-validation-for="Calorias" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="Comentarios" class="control-label"></label>
-                <input asp-for="Comentarios" class="form-control" />
+                <textarea asp-for="Comentarios" class="form-control"></textarea>
                 <span asp-validation-for="Comentarios" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Eliminado" class="control-label"></label>
-                <input asp-for="Eliminado" class="form-control" />
-                <span asp-validation-for="Eliminado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group pt-3">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="pt-4">
+    <a asp-action="Index">Regresar</a>
 </div>
 
 @section Scripts {

@@ -8,7 +8,7 @@ namespace Fitness.ClasesBase
 {
     public class BaseController :  Controller
     {
-        public Usuario sUsuario() 
+        public Usuario Usuario() 
         {
             string? json = HttpContext.Session.GetString("usuario");
 

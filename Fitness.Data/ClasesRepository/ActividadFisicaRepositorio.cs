@@ -20,15 +20,26 @@ namespace Fitness.Data.ClasesRepository
             {
                 var result = new List<ActividadFisica>();
 
+                if (filtro is null)
+                {
+                    filtro = "";
+                }
+
                 if (_db is null) { return new Notificacion<ActividadFisica>(true, Accion.obtenerLista, true); }
-                pf.cantidadRegistros = await _db.Set<ActividadFisica>().CountAsync();
+                pf.cantidadRegistros = _db.ActividadFisica
+                 .Join(_db.TipoActividadFisica,
+                   act => act.TipoActividadFisica,
+                   tipo => tipo.Id,
+                  (act, tipo) => new { Act = act, Tipo = tipo })
+                 .Where(join => join.Tipo.Descripcion.Contains(filtro) && join.Act.Eliminado == false && join.Act.Usuario == pf.usuario)
+                  .Count();
 
                 result = _db.ActividadFisica
                  .Join(_db.TipoActividadFisica,
                    act => act.TipoActividadFisica,
                    tipo => tipo.Id,
-                   (act, tipo) => new { Act = act, Tipo = tipo })
-                 .Where(join => join.Tipo.Descripcion.Contains(filtro) && join.Act.Eliminado == false)
+                  (act, tipo) => new { Act = act, Tipo = tipo })
+                 .Where(join => join.Tipo.Descripcion.Contains(filtro) && join.Act.Eliminado == false && join.Act.Usuario == pf.usuario)
                  .Select(join => join.Act)
                  .OrderBy(pf.Ordenando)
                  .Skip((pf.numeroPagina - 1) * pf.tamanoPagina)
