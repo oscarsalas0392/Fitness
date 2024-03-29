@@ -1,0 +1,33 @@
+﻿@model Fitness.Model.Models.AlimentoConsumido
+
+
+<h4>Editar Alimento de la dieta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group pt-3">
+                <label asp-for="Alimento" class="control-label"></label>
+                <select asp-for="Alimento" class="form-control" asp-items="ViewBag.Alimento"></select>
+                <span asp-validation-for="Alimento" class="text-danger"></span>
+            </div>
+            <div class="form-group pt-3">
+                <label asp-for="Opcion" class="control-label">Plato</label>
+                <select asp-for="Opcion" class="form-control" asp-items="ViewBag.Opcion"></select>
+            </div>
+            <div class="form-group pt-3">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div action="pt-3">
+    <a asp-action="Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

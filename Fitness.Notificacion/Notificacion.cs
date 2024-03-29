@@ -41,8 +41,8 @@ namespace Fitness.Notificacion
             }
         }
 
-        public bool _estado { get; set; }
-        public bool _excepcion { get; set; }
+        public bool _estado { get; set; } = false;
+        public bool _excepcion { get; set; } = true;
         public Accion _accion { get; set; }
 
         public Mensaje mensaje = new Mensaje();

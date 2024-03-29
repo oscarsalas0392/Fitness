@@ -11,9 +11,9 @@ namespace Fitness.Data
         public int numeroPagina { get; set; }
         public int tamanoPagina { get; set; }
         public int elementosPagina => (int)Math.Ceiling((decimal)cantidadRegistros / tamanoPagina);
-        public string columnaOrdenar { get; set; }
-        public string columnaBuscar { get; set; }
-        public string tipoOrdernar { get; set; }
+        public string columnaOrdenar { get; set; } = "";
+        public string columnaBuscar { get; set; } = "";
+        public string tipoOrdernar { get; set; } = "";
         public string Ordenando
         {
             get
@@ -28,6 +28,8 @@ namespace Fitness.Data
         }
         public int cantidadRegistros { get; set; }
         public int? usuario { get; set; } = null;
+        public int? dieta { get; set; } = null;
+        public int? opcionGrupo { get; set; } = null;
         public Filtro()
         {
             numeroPagina = 1;

@@ -72,6 +72,10 @@ public partial class FTContext : DbContext
 
         modelBuilder.Entity<AlimentoConsumido>(entity =>
         {
+            entity.ToTable(tb => tb.HasTrigger("actualizarCalorias"));
+
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+
             entity.HasOne(d => d.AlimentoNavigation).WithMany(p => p.AlimentoConsumido)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_AlimentoConsumido_Alimento");
@@ -83,6 +87,8 @@ public partial class FTContext : DbContext
 
         modelBuilder.Entity<BitacoraPeso>(entity =>
         {
+            entity.Property(e => e.Eliminado).HasDefaultValue(false);
+
             entity.HasOne(d => d.TipoPesoNavigation).WithMany(p => p.BitacoraPeso)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_BitacoraPeso_TipoPeso");

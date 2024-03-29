@@ -1,0 +1,45 @@
+﻿@using Fitness.ViewModels;
+@using Fitness.Model.Models;
+@using Fitness.Data.ClasesRepository;
+@model IndexViewModel<AlimentoConsumido,AlimentoConsumidoRepositorio,int?>
+
+
+<tbody id="result">
+    @foreach (var item in Model.Items)
+    {
+        <tr>
+            <td>
+                @((ViewBag.Alimentos as SelectList).Where(x => x.Value == item.Alimento.ToString()).FirstOrDefault().Text)
+            </td>
+ 
+            <td>
+                @((ViewBag.Calorias as SelectList).Where(x => x.Value == item.Alimento.ToString()).FirstOrDefault().Text)
+            </td>
+
+        
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id" >Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+            </td>
+        </tr>
+    }
+
+    <tr>
+        <td colspan="3">
+            Total de Calorías: @ViewBag.TotalCalorias
+        </td>
+    </tr>
+</tbody>
+<tfoot id="result">
+    <tr>
+        <td colspan="4">
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.paginacion.elementosPagina; i++)
+                {
+                    <li class="page-item"><button class="page-link" data-page="@i" data-command="paging">@i</button></li>
+                }
+            </ul>
+        </td>
+    </tr>
+</tfoot>

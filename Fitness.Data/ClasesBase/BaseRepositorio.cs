@@ -108,12 +108,18 @@ namespace Fitness.Data
                 else
                 {
                     pFiltro.cantidadRegistros = await _db.Set<T>()
-                        .Where($"Eliminado = false {(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")}")
+                        .Where($"Eliminado = false " +
+                               $"{(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")} " +
+                               $"{(pFiltro.opcionGrupo != null ? $" && Opcion = {pFiltro.opcionGrupo}" : "")}" +
+                               $"{(pFiltro.dieta != null ? $" && Dieta = {pFiltro.dieta}" : "")}")
                         .CountAsync();
 
                     result = await _db.Set<T>().
                         AsNoTracking().
-                        Where($"Eliminado = false {(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")}").
+                        Where($"Eliminado = false " +
+                        $"{(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")} " +
+                        $"{(pFiltro.opcionGrupo != null ? $" && Opcion = {pFiltro.opcionGrupo}" : "")}" +
+                        $"{(pFiltro.dieta != null ? $" && Dieta = {pFiltro.dieta}" : "")}").
                         OrderBy(pFiltro.Ordenando).
                         Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
                         Take(pFiltro.tamanoPagina).ToListAsync();
@@ -145,8 +151,12 @@ namespace Fitness.Data
                 T? objecto = notificacion.objecto;
                 PropertyInfo propertyInfo = objecto.GetType().GetProperty("Eliminado");
                 propertyInfo.SetValue(objecto, true);
-                Notificacion<T> notificacionActualizar = await Actualizar(objecto);
-                notificacionActualizar._accion = Accion.eliminar;
+
+                _db.Set<T>().Update(objecto);
+                int resultado = await _db.SaveChangesAsync();
+                bool blnResultado = resultado == 1 ? true : false;
+
+                Notificacion<T> notificacionActualizar = new Notificacion<T>(blnResultado, Accion.eliminar);
                 return notificacionActualizar;             
             }
             catch (Exception)
@@ -160,6 +170,7 @@ namespace Fitness.Data
         {
             try
             {
+                filtro = filtro == null ? "" : filtro;
                 var result = new List<T>();
 
                 if (_db is null) { return new Notificacion<T>(true, Accion.obtenerLista, true); }

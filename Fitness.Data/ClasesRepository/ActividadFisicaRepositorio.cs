@@ -34,7 +34,7 @@ namespace Fitness.Data.ClasesRepository
                  .Where(join => join.Tipo.Descripcion.Contains(filtro) && join.Act.Eliminado == false && join.Act.Usuario == pf.usuario)
                   .Count();
 
-                result = _db.ActividadFisica
+                result = await _db.ActividadFisica
                  .Join(_db.TipoActividadFisica,
                    act => act.TipoActividadFisica,
                    tipo => tipo.Id,
@@ -43,7 +43,7 @@ namespace Fitness.Data.ClasesRepository
                  .Select(join => join.Act)
                  .OrderBy(pf.Ordenando)
                  .Skip((pf.numeroPagina - 1) * pf.tamanoPagina)
-                 .Take(pf.tamanoPagina).ToList();
+                 .Take(pf.tamanoPagina).ToListAsync<ActividadFisica>();
      
                 Notificacion<ActividadFisica> notificacion = new Notificacion<ActividadFisica>(result is not null, Accion.obtenerLista);
                 notificacion.lista = result;

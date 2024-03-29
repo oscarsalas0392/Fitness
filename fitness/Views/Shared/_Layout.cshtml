@@ -44,6 +44,10 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="ActividadFisica" asp-action="Index">Actividades Fisicas</a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Dieta" asp-action="Index">Dieta</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -53,7 +57,7 @@
                     <a class="aPhoto nav-link text-dark" asp-route-id="@usuario?.Id" asp-controller="Usuario" asp-action="Edit">
                         @if (usuario.Foto == null)
                         {
-                            <img class="photoUser" src="../images/person-circle.svg">
+                            <img class="photoUser" src="~/images/person-circle.svg">
                         }
                         else
                         {

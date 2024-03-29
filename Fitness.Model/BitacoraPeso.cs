@@ -20,6 +20,8 @@ public partial class BitacoraPeso
 
     public int TipoPeso { get; set; }
 
+    public bool Eliminado { get; set; }
+
     [Column(TypeName = "datetime")]
     public DateTime Fecha { get; set; }
 

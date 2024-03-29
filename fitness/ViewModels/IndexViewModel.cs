@@ -15,15 +15,26 @@ namespace Fitness.ViewModels
         public IEnumerable<T> Items { get; set; } = new List<T>();
         public Filtro paginacion { get; set; } = new Filtro() { columnaOrdenar = "Descripcion", columnaBuscar= "Descripcion" };
 
+
         public async Task HandleRequest(TR cR, string columnaOrdenar = "Descripcion", string columnaBuscar = "Descripcion", int? usuario = null)
         {
             paginacion.columnaBuscar = columnaBuscar;
             paginacion.columnaOrdenar = columnaOrdenar;
             paginacion.usuario = usuario;
-
             _cR = cR;
+            await EjecutarComando(Command);
+        }
 
-            switch (Command)
+        public async Task HandleRequest(TR cR,int? dieta = null)
+        {
+            paginacion.dieta = dieta;
+            _cR = cR;
+            await EjecutarComando(Command);
+        }
+
+        private async Task EjecutarComando (string comando)
+        {
+            switch (comando)
             {
                 case "list":
                     await list();
@@ -36,6 +47,7 @@ namespace Fitness.ViewModels
                 default:
                     break;
             }
+
         }
 
         async Task list()

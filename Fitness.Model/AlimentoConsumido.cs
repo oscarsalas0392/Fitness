@@ -19,6 +19,8 @@ public partial class AlimentoConsumido
 
     public int Opcion { get; set; }
 
+    public bool Eliminado { get; set; }
+
     [ForeignKey("Alimento")]
     [InverseProperty("AlimentoConsumido")]
     public virtual Alimento AlimentoNavigation { get; set; }

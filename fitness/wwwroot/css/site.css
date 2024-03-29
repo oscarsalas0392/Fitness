@@ -75,3 +75,11 @@ body {
     display: flex;
     align-items: center;
 }
+.buscarAqui {
+    width:50%;
+}
+
+
+.comboPlato {
+    width: 25%;
+}

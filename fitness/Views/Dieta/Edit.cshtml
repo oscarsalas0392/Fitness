@@ -1,0 +1,49 @@
+﻿@model Fitness.Model.Models.Dieta
+
+
+
+<h4>Dieta</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group pt-3">
+                <label asp-for="TipoComida" class="control-label">Tipo de Comida</label>
+                <select asp-for="TipoComida" class="form-control" asp-items="ViewBag.TipoComida"></select>
+            </div>
+
+            <div class="form-group pt-3">
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pt-3">
+                <label asp-for="Calorias" class="control-label">Calorías</label>
+                <input disabled asp-for="Calorias" class="form-control" />
+                <span asp-validation-for="Calorias" class="text-danger"></span>
+            </div>
+            <div class="form-group pt-3">
+                <label asp-for="Comentarios" class="control-label"></label>
+                <textarea asp-for="Comentarios" class="form-control"></textarea>
+                <span asp-validation-for="Comentarios" class="text-danger"></span>
+            </div>
+
+            <div class="form-group pt-3">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="pt-4">
+    <a asp-action="Index" asp-controller="AlimentoConsumido">Ver alimentos</a>
+    <a asp-action="Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

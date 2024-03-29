@@ -32,6 +32,8 @@ namespace Fitness
             services.AddSession();
 
             services.AddTransient<IRepositorio<Dieta, int?>, DietaRepositorio>();
+            services.AddTransient<IRepositorio<Alimento, int?>, AlimentoRepositorio>();
+            services.AddTransient<IRepositorio<AlimentoConsumido, int?>, AlimentoConsumidoRepositorio>();
             services.AddTransient<IRepositorio<Genero, int?>, GeneroRepositorio>();
             services.AddTransient<IRepositorio<MetaSalud, int?>, MetaSaludRepositorio>();
             services.AddTransient<IRepositorio<TipoAltura, int?>, TipoAlturaRepositorio>();
@@ -54,7 +56,8 @@ namespace Fitness
             services.AddTransient(typeof(UsuarioRepositorio));
             services.AddTransient(typeof(TipoActividadFisicaRepositorio));
             services.AddTransient(typeof(ActividadFisicaRepositorio));
-
+            services.AddTransient(typeof(AlimentoRepositorio));
+            services.AddTransient(typeof(AlimentoConsumidoRepositorio));
 
         }
 

@@ -1,0 +1,153 @@
+﻿@using Fitness.ViewModels;
+@using Fitness.Model.Models;
+@using Fitness.Data.ClasesRepository;
+@model IndexViewModel<AlimentoConsumido,AlimentoConsumidoRepositorio,int?>
+@{
+    ViewData["Title"] = "Alimentos a consumir";
+}
+
+<h1>@ViewBag.TipoComida</h1>
+
+<h3>Alimientos a consumir</h3>
+
+<p>
+    <a asp-action="Create">Agregar</a>
+</p>
+
+<div id="processing" data-message="Procesando espere ..."></div>
+
+<form id="form1" asp-antiforgery="false">
+    <div class="d-flex flex-column">
+        <div>
+            <input  id="command" asp-for="Command" type="hidden" />
+            <input  id="page" asp-for="paginacion.numeroPagina" type="hidden" />
+            <input  id="sort" asp-for="paginacion.columnaOrdenar" type="hidden" />
+            <input  id="sortdir" asp-for="paginacion.tipoOrdernar" type="hidden" />
+            <div class="content_Peso gap-2">
+                <input class="buscarAqui" asp-for="filtro.Descripcion" placeholder="Buscar aquí ..." />
+                <div class="content_Peso comboPlato">
+                    <label asp-for="paginacion.opcionGrupo" class="control-label minutos">Plato</label>
+                    <select id="option" asp-for="paginacion.opcionGrupo" class="form-control" asp-items="ViewBag.Opciones"></select>
+                </div>
+                <button data-command="search">Search</button>
+            </div>
+         
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Alimento
+                    </th>
+                    <th>
+                        Calorías
+                    </th>                  
+                    <th></th>
+                </tr>
+            </thead>
+            @{
+                await Html.RenderPartialAsync("IndexTable");
+            }
+        </table>
+
+    </div>
+
+</form>
+
+<script>
+    (function enableGrid(main, params, ajax = false, el = '', process = '') {
+
+        function bindParams(main, params) {
+            // Enlace del evento click para los diferentes parámetros
+            params.forEach(p => {
+                //console.log(p);
+
+                let actions = document.querySelectorAll(`${main} [data-${p}]`);
+                //console.log(actions);
+
+                actions.forEach(a => {
+                    a.addEventListener('click', function (event) {
+                        //event.preventDefault();
+
+                        let value = this.dataset[p];
+                        //console.log(value);
+
+                        let input = document.querySelector(`${main} input[id="${p}"]`);
+                        //console.log(input);
+
+                        input.value = value;
+                    });
+                });
+            });
+        }
+
+        bindParams(main, params); // Enlazar los parámetros de la interfaz
+
+        let form = document.querySelector(main);
+        form.setAttribute('method', ajax ? 'post' : 'get');
+
+        // Hacer el envio con AJAX
+        if (ajax && el.length > 0) {
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                console.log({ form });
+                // Determinar la porción a actualizar
+                const nodes = document.querySelectorAll(`${main} ${el}`);
+                //console.log(nodes);
+
+                if (nodes.length > 0) {
+                    let processElement = document.querySelector(`${process}`);
+                    processElement.classList.add('processing'); // Indicador de procesamiento
+
+                    // Determinar el elemento después de donde actualizar
+                    const previo = nodes[0].previousElementSibling;
+                    //console.log(previo);
+
+                    let fd = new FormData(form);
+
+                    //console.log('submit');
+                    //console.log(fd);
+
+                    const response = await fetch(window.location.href, { method: 'post', headers: { 'X-Requested-With': 'fetch' }, body: fd });
+                    console.log(response);
+
+                    if (response.ok) {
+                        let text = await response.text();
+                        //console.log(text);
+
+                        // Eliminar los elementos actuales
+                        nodes.forEach(n => n.remove());
+
+                        // Se coloca el resultado tomando como base el elemento previo
+                        previo.insertAdjacentHTML('afterend', text);
+
+                        bindParams(main, params); // Enlazar los parámetros de la interfaz
+
+                        processElement.classList.remove('processing'); // Indicador de procesamiento
+                    }
+                }
+            });
+        }
+
+        // TODO Normalizar nombres de parámetros
+        // Deshabilitar interacción
+        // Personalizar indicador de proqueso
+        // Agregar animación en la presentación de resultados
+        // Inicializar la página al buscar
+    })('#form1', ['command', 'page', 'sort', 'sortdir', 'option'], true, '#result', '#processing');
+
+    $(function () {
+        $("#option").change(function () {
+            var v = $(this).val();
+            alert(v);
+        });
+    });
+
+</script>
+
+<style>
+    .processing:before {
+        content: attr(data-message);
+    }
+</style>

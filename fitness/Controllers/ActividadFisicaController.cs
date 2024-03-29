@@ -132,7 +132,7 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             Notificacion<ActividadFisica> notificacion = await _cR.ObtenerId(id);
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion", notificacion.objecto.TipoActividadFisica);
+            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion", notificacion?.objecto?.TipoActividadFisica);
             ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion");
             if (!notificacion._estado || notificacion._excepcion)
             {
