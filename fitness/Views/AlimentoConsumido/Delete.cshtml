@@ -9,7 +9,7 @@
             Alimento
         </dt>
         <dd class="col-sm-10">
-            @((ViewBag.Alimento as SelectList).Where(x => x.Value == Model.Alimento.ToString()).FirstOrDefault().Text)
+            @(Model.AlimentoNavigation.Descripcion)
         </dd>
         <dt class = "col-sm-2">
             Plato

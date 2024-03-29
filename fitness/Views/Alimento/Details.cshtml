@@ -1,0 +1,24 @@
+﻿@model Fitness.Model.Models.Alimento
+
+<div>
+    <h4>Alimento</h4>
+    <hr />
+    <dl class="row">
+      <dt class = "col-sm-2">
+                Descripción
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+                Calorías
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Calorias)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

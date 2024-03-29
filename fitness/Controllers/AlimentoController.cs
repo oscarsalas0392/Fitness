@@ -11,29 +11,28 @@ using Fitness.Data.ClasesRepository;
 using Fitness.Data.Interfaces;
 using Fitness.Extensions;
 using Fitness.ViewModels;
-using Fitness.ClasesBase;
 using Fitness.Notificacion;
-using Fitness.Enums;
 
 namespace Fitness.Controllers
 {
-    public class DietaController : BaseController
+    public class AlimentoController : Controller
     {
         private readonly FTContext _context;
-        private readonly IRepositorio<Dieta, int?> _cR;
-        private readonly DietaRepositorio _cR2; 
+        private readonly IRepositorio<Alimento, int?> _cR;
+        private readonly AlimentoRepositorio _cR2;
 
-        public DietaController(FTContext context, IRepositorio<Dieta, int?> cR, DietaRepositorio cR2)
+
+        public AlimentoController(FTContext context, IRepositorio<Alimento, int?> cR, AlimentoRepositorio cR2)
         {
             _context = context;
             _cR = cR;
             _cR2 = cR2;
         }
 
-        // GET: Dieta
-        public async Task<IActionResult> Index(IndexViewModel<Dieta, DietaRepositorio, int?> vm)
+        // GET: Alimentoes
+        public async Task<IActionResult> Index(IndexViewModel<Alimento, AlimentoRepositorio, int?> vm)
         {
-            await vm.HandleRequest(_cR2, "Fecha", "TipoComidaNavigation.Descripcion", Usuario().Id);
+            await vm.HandleRequest(_cR2, "Descripcion", "Descripcion");
 
             if (Request.IsAjaxRequest())
             {
@@ -42,12 +41,10 @@ namespace Fitness.Controllers
             return View(vm);
         }
 
-        // GET: Dieta/Details/5
+        // GET: Alimentoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
-
-            Notificacion<Dieta> notificacion = await _cR.ObtenerId(id);
+            Notificacion<Alimento> notificacion = await _cR.ObtenerId(id);
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
@@ -56,100 +53,86 @@ namespace Fitness.Controllers
             return View(notificacion.objecto);
         }
 
-        // GET: Dieta/Create
+        // GET: Alimentoes/Create
         public IActionResult Create()
         {
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion");
             return View();
         }
 
-        // POST: Dieta/Create
+        // POST: Alimentoes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Usuario,Fecha,TipoComida,Calorias,Comentarios,Eliminado")] Dieta dieta)
+        public async Task<IActionResult> Create([Bind("Id,Descripcion,Calorias,Eliminado")] Alimento alimento)
         {
-            dieta.Usuario = Usuario().Id;
+      
             if (ModelState.IsValid)
             {
-                Notificacion<Dieta> notificacion = await _cR.Guardar(dieta);
-                if (notificacion._estado && !notificacion._excepcion && notificacion.objecto is not null)
-                {
-                    GuardarIntSession(SessionKey.dieta.ToString(), notificacion.objecto.Id);
-                    return RedirectToAction("Index", "AlimentoConsumido");
-                }
-
+                Notificacion<Alimento> notificacion = await _cR.Guardar(alimento);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion", dieta.TipoComida);
-            return View(dieta);
+            
+            return View(alimento);
         }
 
-        // GET: Dieta/Edit/5
+        // GET: Alimentoes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            Notificacion<Dieta> notificacion = await _cR.ObtenerId(id);
-          
+            Notificacion<Alimento> notificacion = await _cR.ObtenerId(id);
+
             if (!notificacion._estado || notificacion._excepcion || notificacion.objecto is null)
             {
                 return NotFound();
             }
-            GuardarIntSession(SessionKey.dieta.ToString(), notificacion.objecto.Id);
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion", notificacion.objecto.TipoComida);
- 
             return View(notificacion.objecto);
         }
 
-        // POST: Dieta/Edit/5
+        // POST: Alimentoes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Usuario,Fecha,TipoComida,Calorias,Comentarios,Eliminado")] Dieta dieta)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Descripcion,Calorias,Eliminado")] Alimento alimento)
         {
-            if (id != dieta.Id)
+            if (id != alimento.Id)
             {
                 return NotFound();
             }
-            dieta.Usuario = Usuario().Id;
+     
             if (ModelState.IsValid)
             {
-                Notificacion<Dieta> notificacion = await _cR.Actualizar(dieta);
+                Notificacion<Alimento> notificacion = await _cR.Actualizar(alimento);
 
                 if (!notificacion._estado || notificacion._excepcion)
                 {
                     Mensaje mensaje = notificacion.mensaje;
                     ModelState.AddModelError("", $"{mensaje.titulo} - {mensaje.Descripcion}");
-                    return View(dieta);
+                    return View(alimento);
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion", dieta.TipoComida);
-            return View(dieta);
+            return View(alimento);
         }
 
-        // GET: Dieta/Delete/5
+        // GET: Alimentoes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-
-            Notificacion<Dieta> notificacion = await _cR.ObtenerId(id);
+            Notificacion<Alimento> notificacion = await _cR.ObtenerId(id);
 
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
             }
-
             return View(notificacion.objecto);
         }
 
-        // POST: Dieta/Delete/5
+        // POST: Alimentoes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            Notificacion<Dieta> notificacion = await _cR.Eliminar(id);
+            Notificacion<Alimento> notificacion = await _cR.Eliminar(id);
             return RedirectToAction(nameof(Index));
         }
 

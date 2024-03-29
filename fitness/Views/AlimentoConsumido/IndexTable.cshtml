@@ -9,11 +9,11 @@
     {
         <tr>
             <td>
-                @((ViewBag.Alimentos as SelectList).Where(x => x.Value == item.Alimento.ToString()).FirstOrDefault().Text)
+                @(item.AlimentoNavigation.Descripcion)
             </td>
  
             <td>
-                @((ViewBag.Calorias as SelectList).Where(x => x.Value == item.Alimento.ToString()).FirstOrDefault().Text)
+                @(item.AlimentoNavigation.Calorias)
             </td>
 
         

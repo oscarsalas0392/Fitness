@@ -32,8 +32,8 @@ namespace Fitness.Controllers
         // GET: ActividadFisica
         public async Task<IActionResult> Index(IndexViewModel<ActividadFisica, ActividadFisicaRepositorio, int?> vm)
         {
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion");
-            await vm.HandleRequest(_cR2,"Fecha", "TipoActividadFisica", Usuario().Id);
+   
+            await vm.HandleRequest(_cR2,"Fecha", "TipoActividadFisicaNavigation.Descripcion", Usuario().Id);
 
             if (Request.IsAjaxRequest())
             {
@@ -46,8 +46,7 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             Notificacion<ActividadFisica> notificacion = await _cR.ObtenerId(id);
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion");
-            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion");
+
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();
@@ -132,8 +131,7 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             Notificacion<ActividadFisica> notificacion = await _cR.ObtenerId(id);
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion", notificacion?.objecto?.TipoActividadFisica);
-            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion");
+
             if (!notificacion._estado || notificacion._excepcion)
             {
                 return NotFound();

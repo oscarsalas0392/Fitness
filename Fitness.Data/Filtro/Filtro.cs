@@ -30,6 +30,8 @@ namespace Fitness.Data
         public int? usuario { get; set; } = null;
         public int? dieta { get; set; } = null;
         public int? opcionGrupo { get; set; } = null;
+
+        public List<string> lstIncludes { get; set; } = new List<string>();
         public Filtro()
         {
             numeroPagina = 1;

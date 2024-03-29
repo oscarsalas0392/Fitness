@@ -10,7 +10,7 @@
     {
         <tr>
             <td>
-                @((ViewBag.TipoActividadFisica as SelectList).Where(x=> x.Value == item.Id.ToString()).FirstOrDefault().Text)
+                @(item.TipoActividadFisicaNavigation.Descripcion)
             </td>
             <td>
                 @item.Fecha
@@ -19,7 +19,7 @@
                 @item.Duracion
             </td>
             <td>
-                @item.Distancia
+                @item.Distancia  @(item.TipoDistanciaNavigation.Descripcion)
             </td>
             <td>
                 @item.Calorias

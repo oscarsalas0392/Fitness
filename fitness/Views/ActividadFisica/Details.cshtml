@@ -14,7 +14,7 @@
             Nombre
         </dt>
         <dd class="col-sm-10">
-            @((ViewBag.TipoActividadFisica as SelectList).Where(x => x.Value == Model.Id.ToString()).FirstOrDefault().Text)
+            @(Model.TipoActividadFisicaNavigation.Descripcion)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Fecha)
@@ -32,7 +32,7 @@
             @Html.DisplayNameFor(model => model.Distancia)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Distancia)   @((ViewBag.TipoDistancia as SelectList).Where(x => x.Value == Model.TipoDistancia.ToString()).FirstOrDefault().Text)
+            @Html.DisplayFor(model => model.Distancia)   @(Model.TipoDistanciaNavigation.Descripcion)
         </dd>
         <dt class = "col-sm-2">
             Calorías

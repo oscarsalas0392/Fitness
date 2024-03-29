@@ -42,27 +42,20 @@ namespace Fitness.Controllers
         // GET: AlimentoConsumido
         public async Task<IActionResult> Index(IndexViewModel<AlimentoConsumido, AlimentoConsumidoRepositorio, int?> vm)
         {
-            await vm.HandleRequest(_cR2, Dieta());
+            await vm.HandleRequest(_cR2, "AlimentoNavigation.Descripcion", "AlimentoNavigation.Descripcion",Dieta(),true);
 
             Notificacion<Dieta> notificacionDieta = await _cRD.ObtenerId(Dieta());
             if (notificacionDieta._estado && !notificacionDieta._excepcion && notificacionDieta.objecto is not null)
-            {
-                Notificacion<TipoComida> notificacionTipoComida = await _cRA.ObtenerId(notificacionDieta.objecto.TipoComida);
-                if (notificacionTipoComida._estado && !notificacionTipoComida._excepcion && notificacionTipoComida.objecto is not null)
-                {
-                    ViewBag.TipoComida = notificacionTipoComida.objecto.Descripcion;
-                }
+            {           
+                 ViewBag.TipoComida = notificacionDieta.objecto.TipoComidaNavigation.Descripcion;              
             }
 
             Notificacion<Opcion> notificacionOpcion = await _cR2.ObtenerOpciones(Dieta());
-            Notificacion<Alimento> notificacionAlimento = await _cR2.ObtenerAlimentos(vm.paginacion);
             Notificacion<int> notificacionTotalCalorias = _cR2.TotalCalorias(vm.paginacion);
 
             ViewBag.TotalCalorias = notificacionTotalCalorias.objecto;
             ViewData["Opciones"] = new SelectList(notificacionOpcion.lista, "Id", "Id");
-            ViewData["Alimentos"] = new SelectList(notificacionAlimento.lista, "Id", "Descripcion");
-            ViewData["Calorias"] = new SelectList(notificacionAlimento.lista, "Id", "Calorias");
-
+ 
             if (Request.IsAjaxRequest())
             {
                 return PartialView("IndexTable", vm);
@@ -79,7 +72,7 @@ namespace Fitness.Controllers
             {
                 return NotFound();
             }
-            ViewData["Alimento"] = new SelectList(_context.Set<Alimento>(), "Id", "Descripcion", notificacion.objecto.Alimento);
+     
             return View(notificacion.objecto);
         }
 
@@ -87,7 +80,7 @@ namespace Fitness.Controllers
         public async Task<IActionResult> Create(int idConsumido)
         {
             ViewData["Alimento"] = new SelectList(_context.Set<Alimento>(), "Id", "Descripcion");
-            Notificacion<Opcion> notificacionOpcion = await _cR2.ObtenerOpciones();
+            Notificacion<Opcion> notificacionOpcion =  _cR2.ObtenerOpciones();
             ViewData["Opcion"] = new SelectList(notificacionOpcion.lista, "Id", "Id");
             return View();
         }
@@ -120,7 +113,7 @@ namespace Fitness.Controllers
             }
 
             ViewData["Alimento"] = new SelectList(_context.Set<Alimento>(), "Id", "Descripcion");
-            Notificacion<Opcion> notificacionOpcion = await _cR2.ObtenerOpciones();
+            Notificacion<Opcion> notificacionOpcion =  _cR2.ObtenerOpciones();
             ViewData["Opcion"] = new SelectList(notificacionOpcion.lista, "Id", "Id");
     
             return View(notificacion.objecto);
@@ -165,7 +158,7 @@ namespace Fitness.Controllers
             {
                 return NotFound();
             }
-            ViewData["Alimento"] = new SelectList(_context.Set<Alimento>(), "Id", "Descripcion", notificacion.objecto.Alimento);
+       
             return View(notificacion.objecto);
         
         }

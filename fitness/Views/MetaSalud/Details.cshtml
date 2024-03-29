@@ -1,0 +1,43 @@
+﻿@model Fitness.Model.Models.MetaSalud
+
+<div>
+    <h4>Meta de Salud</h4>
+    <hr />
+    <dl class="row">
+         <dt class="col-sm-2">
+            Tipo de Meta
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.TipoMetaNavigation.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+            Peso Objectivo
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PesoObjectivo) @(Model.TipoPesoNavigation.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+            Fecha Objectivo
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaObjectivo)
+        </dd>
+        <dt class = "col-sm-2">
+            Nivel de Actividad
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NivelActividad)
+        </dd>
+        <dt class = "col-sm-2">
+            Ojectivo Específico
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OjectivoEspecifico)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Regresar</a>
+</div>
+

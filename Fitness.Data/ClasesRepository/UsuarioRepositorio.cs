@@ -11,15 +11,18 @@ namespace Fitness.Data.ClasesRepository
 {
     public class UsuarioRepositorio : BaseRepositorio<Usuario, int?>
     {
-        public UsuarioRepositorio(FTContext db) : base(db){}
+        public UsuarioRepositorio(FTContext db) : base(db){
+            lstIncludes.Add("TipoAlturaNavigation");
+            lstIncludes.Add("TipoPesoNavigation");
+        }
 
-        public async Task<Notificacion<Usuario>> ValidarUsuario(string correo, string nombreUsuario, string contrasena)
+        public async Task<Notificacion<Usuario>> ValidarUsuario(string correo, string contrasena)
         {
             try 
             {
                 contrasena = DecryptAndEncrypt.EncryptStringAES(contrasena);
                 if (_db is null) { return new Notificacion<Usuario>(true, Accion.obtenerLista, true); }
-                Usuario? usuario = await _db.Usuario.Where(x => (x.Correo == correo || x.NombreUsuario == nombreUsuario) && x.Contrasena == contrasena).FirstOrDefaultAsync();
+                Usuario? usuario = await _db.Usuario.Where(x => (x.Correo == correo || x.NombreUsuario == correo) && x.Contrasena == contrasena).FirstOrDefaultAsync();
                 Notificacion<Usuario> notificacion = new Notificacion<Usuario>(true,Accion.obtener);
                 notificacion.objecto = usuario;
                 return notificacion;

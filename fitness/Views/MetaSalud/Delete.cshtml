@@ -1,0 +1,47 @@
+﻿@model Fitness.Model.Models.MetaSalud
+
+
+<h3>¿Usted está seguro de eliminar esto?</h3>
+<div>
+    <h4>MetaSalud</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Tipo de Meta
+        </dt>
+        <dd class="col-sm-10">
+            @(Model.TipoMetaNavigation.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+            Peso Objectivo
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PesoObjectivo) @(Model.TipoPesoNavigation.Descripcion)
+        </dd>
+        <dt class = "col-sm-2">
+            Fecha Objectivo
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FechaObjectivo)
+        </dd>
+        <dt class = "col-sm-2">
+            Nivel de Actividad
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NivelActividad)
+        </dd>
+        <dt class = "col-sm-2">
+            Ojectivo Específico
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OjectivoEspecifico)
+        </dd>
+  
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="Index">Regresar</a>
+    </form>
+</div>

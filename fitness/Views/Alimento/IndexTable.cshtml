@@ -1,7 +1,7 @@
 ﻿@using Fitness.ViewModels;
 @using Fitness.Model.Models;
 @using Fitness.Data.ClasesRepository;
-@model IndexViewModel<Dieta,DietaRepositorio,int?>
+@model IndexViewModel<Alimento,AlimentoRepositorio,int?>
 
 
 
@@ -10,14 +10,12 @@
     {
         <tr>
             <td>
-                @(item.TipoComidaNavigation.Descripcion)
-            </td>
-            <td>
-                @item.Fecha
+                @(item.Descripcion)
             </td>
             <td>
                 @item.Calorias
             </td>
+  
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Ver</a> |

@@ -1,0 +1,48 @@
+﻿@model Fitness.Model.Models.MetaSalud
+
+
+<h4>Agregar Meta de Salud</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TipoMeta" class="control-label">Tipo de Meta</label>
+                <select asp-for="TipoMeta" class ="form-control" asp-items="ViewBag.TipoMeta"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="PesoObjectivo" class="control-label">Peso Objetivo</label>
+                <input asp-for="PesoObjectivo" class="form-control" />
+                <span asp-validation-for="PesoObjectivo" class="text-danger"></span>
+                 <select asp-for="TipoPeso" class="form-control" asp-items="ViewBag.TipoPeso"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaObjectivo" class="control-label">Fecha Objectivo</label>
+                <input asp-for="FechaObjectivo" class="form-control" />
+                <span asp-validation-for="FechaObjectivo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NivelActividad" class="control-label">Nivel de actividad</label>
+                <input asp-for="NivelActividad" class="form-control" />
+                <span asp-validation-for="NivelActividad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OjectivoEspecifico" class="control-label">Ojectivo Específico</label>
+                <textarea asp-for="OjectivoEspecifico" class="form-control"></textarea>
+                <span asp-validation-for="OjectivoEspecifico" class="text-danger"></span>
+            </div>         
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Regresar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

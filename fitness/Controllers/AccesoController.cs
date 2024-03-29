@@ -63,7 +63,7 @@ namespace Fitness.Controllers
         [HttpPost]
         public async  Task<ActionResult> Login(Usuario oUsuario)
         {
-           Notificacion<Usuario> notificacion =  await _cRU.ValidarUsuario(oUsuario.Correo,oUsuario.NombreUsuario,oUsuario.Contrasena);
+           Notificacion<Usuario> notificacion =  await _cRU.ValidarUsuario(oUsuario.Correo,oUsuario.Contrasena);
            Usuario? usuario = notificacion.objecto;
 
          if(usuario is null)

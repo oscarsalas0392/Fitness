@@ -15,5 +15,7 @@ namespace Fitness.Data
         public DbSet<Fitness.Model.Models.Usuario> Usuario { get; set; } = default!;
         public DbSet<Fitness.Model.Models.Dieta> Dieta { get; set; } = default!;
         public DbSet<Fitness.Model.Models.AlimentoConsumido> AlimentoConsumido { get; set; } = default!;
+        public DbSet<Fitness.Model.Models.MetaSalud> MetaSalud { get; set; } = default!;
+        public DbSet<Fitness.Model.Models.Alimento> Alimento { get; set; } = default!;
     }
 }

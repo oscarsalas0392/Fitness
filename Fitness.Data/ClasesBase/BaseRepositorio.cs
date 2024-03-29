@@ -14,6 +14,8 @@ namespace Fitness.Data
 {
     public abstract class BaseRepositorio<T, TK> : IRepositorio<T, TK> where T : class
     {
+        public List<string> lstIncludes = new List<string>();
+
         readonly protected FTContext? _db = null;
         public string _columnaPK { get; set; } = "Id";
 
@@ -73,7 +75,16 @@ namespace Fitness.Data
             try
             {
                 if (_db is null || key is null) { return new Notificacion<T>(false, Accion.obtener);}
-                T? objecto = await _db.Set<T>().Where($"{_columnaPK} = {key}").FirstOrDefaultAsync();
+
+                IQueryable<T> query = _db.Set<T>();
+
+                //Configuracion de includes
+                foreach (string include in lstIncludes)
+                {
+                    query = query.Include(include);
+                }
+
+                T? objecto = await query.Where($"{_columnaPK} = {key}").FirstOrDefaultAsync();
                 Notificacion<T> notificacion = new Notificacion<T>(objecto is not null, Accion.obtener);
                 notificacion.objecto = objecto;
                 return notificacion;
@@ -107,19 +118,26 @@ namespace Fitness.Data
                 }
                 else
                 {
-                    pFiltro.cantidadRegistros = await _db.Set<T>()
+                    IQueryable<T> query =  _db.Set<T>();
+
+                    //Configuracion de includes
+                    foreach (string include in lstIncludes)
+                    {
+                        query = query.Include(include);
+                    }
+
+                    //Configuracion de where
+                    query = query
                         .Where($"Eliminado = false " +
                                $"{(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")} " +
                                $"{(pFiltro.opcionGrupo != null ? $" && Opcion = {pFiltro.opcionGrupo}" : "")}" +
-                               $"{(pFiltro.dieta != null ? $" && Dieta = {pFiltro.dieta}" : "")}")
-                        .CountAsync();
+                               $"{(pFiltro.dieta != null ? $" && Dieta = {pFiltro.dieta}" : "")}");
+            
+                    //Se obtiene la cantidad registros de la tabla
+                    pFiltro.cantidadRegistros = await query.CountAsync();
 
-                    result = await _db.Set<T>().
-                        AsNoTracking().
-                        Where($"Eliminado = false " +
-                        $"{(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")} " +
-                        $"{(pFiltro.opcionGrupo != null ? $" && Opcion = {pFiltro.opcionGrupo}" : "")}" +
-                        $"{(pFiltro.dieta != null ? $" && Dieta = {pFiltro.dieta}" : "")}").
+                    //Se realiza la paginacion
+                    result = await query.
                         OrderBy(pFiltro.Ordenando).
                         Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
                         Take(pFiltro.tamanoPagina).ToListAsync();
@@ -136,7 +154,6 @@ namespace Fitness.Data
                 return notificacion;
             }
         }
-
         public virtual async Task<Notificacion<T>> Eliminar(TK key)
         {
             try
@@ -165,8 +182,7 @@ namespace Fitness.Data
             } 
                 
         }
-
-        public virtual async Task<Notificacion<T>> Buscar(string filtro,Filtro pf)
+        public virtual async Task<Notificacion<T>> Buscar(string filtro,Filtro pFiltro)
         {
             try
             {
@@ -174,13 +190,29 @@ namespace Fitness.Data
                 var result = new List<T>();
 
                 if (_db is null) { return new Notificacion<T>(true, Accion.obtenerLista, true); }
-                pf.cantidadRegistros = await _db.Set<T>().CountAsync();
 
-                result = await _db.Set<T>().AsNoTracking().
-                    Where($"{pf.columnaBuscar}.Contains(\"{filtro}\") && Eliminado = false").
-                    OrderBy(pf.Ordenando).
-                    Skip((pf.numeroPagina - 1) * pf.tamanoPagina).
-                    Take(pf.tamanoPagina).ToListAsync();
+                IQueryable<T> query = _db.Set<T>();
+
+                //Configuracion de includes
+                foreach (string include in lstIncludes)
+                {
+                    query = query.Include(include);
+                }
+
+                //Configuracion de where
+                query = query
+                    .Where($"Eliminado = false " +
+                           $"{(pFiltro.usuario != null ? $" && Usuario = {pFiltro.usuario}" : "")} " +
+                           $"{(pFiltro.opcionGrupo != null ? $" && Opcion = {pFiltro.opcionGrupo}" : "")}" +
+                           $"{(pFiltro.dieta != null ? $" && Dieta = {pFiltro.dieta}" : "")}" +
+                           $"&& {pFiltro.columnaBuscar}.Contains(\"{filtro}\")"); ;
+
+                pFiltro.cantidadRegistros = await query.CountAsync();
+
+                result = await query.
+                    OrderBy(pFiltro.Ordenando).
+                    Skip((pFiltro.numeroPagina - 1) * pFiltro.tamanoPagina).
+                    Take(pFiltro.tamanoPagina).ToListAsync();
 
                 Notificacion<T> notificacion = new Notificacion<T>(result is not null, Accion.obtenerLista);
                 notificacion.lista = result;
