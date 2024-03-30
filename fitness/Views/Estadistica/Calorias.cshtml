@@ -1,0 +1,41 @@
+﻿<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    (async () => {
+        const ctx = document.getElementById('myChart');
+        const request = new Request("/Estadistica/ObtenerCalorias");
+
+        const response = await fetch(request);   
+        const graficoCalorias = await response.json();
+        console.log(graficoCalorias)
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: graficoCalorias.historialFecha,
+                datasets: [{
+                    label: 'Calorías',
+                    data: graficoCalorias.historialCalorias,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Historial de Pesos'
+                    }
+                }
+            },
+        });
+
+    })()
+
+</script>

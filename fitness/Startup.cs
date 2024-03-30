@@ -58,6 +58,7 @@ namespace Fitness
             services.AddTransient(typeof(ActividadFisicaRepositorio));
             services.AddTransient(typeof(AlimentoRepositorio));
             services.AddTransient(typeof(AlimentoConsumidoRepositorio));
+            services.AddTransient(typeof(BitacoraPesoRepositorio));
 
         }
 

@@ -57,10 +57,12 @@ namespace Fitness.Controllers
         }
 
         // GET: MetaSalud/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TipoMeta"] = new SelectList(_context.Set<TipoMeta>(), "Id", "Descripcion");
-            ViewData["TipoPeso"] = new SelectList(_context.Set<TipoPeso>(), "Id", "Descripcion"); 
+            Notificacion<TipoMeta> notificacionTipoMeta = await _cRTM.ObtenerLista();
+            Notificacion<TipoPeso> notificacionTipoPeso = await _cRTP.ObtenerLista();
+            ViewData["TipoMeta"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion");
+            ViewData["TipoPeso"] = new SelectList(notificacionTipoPeso.lista, "Id", "Descripcion"); 
             return View();
         }
 
@@ -78,8 +80,11 @@ namespace Fitness.Controllers
                 Notificacion<MetaSalud> notificacion = await _cR.Guardar(metaSalud);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipoMeta"] = new SelectList(_context.Set<TipoMeta>(), "Id", "Descripcion", metaSalud.TipoMeta);
-            ViewData["TipoPeso"] = new SelectList(_context.Set<TipoPeso>(), "Id", "Descripcion", metaSalud.TipoPeso);  
+
+            Notificacion<TipoMeta> notificacionTipoMeta = await _cRTM.ObtenerLista();
+            Notificacion<TipoPeso> notificacionTipoPeso = await _cRTP.ObtenerLista();
+            ViewData["TipoMeta"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion", metaSalud.TipoMeta);
+            ViewData["TipoPeso"] = new SelectList(notificacionTipoPeso.lista, "Id", "Descripcion", metaSalud.TipoPeso);  
             return View(metaSalud);
         }
 
@@ -92,8 +97,11 @@ namespace Fitness.Controllers
             {
                 return NotFound();
             }
-            ViewData["TipoMeta"] = new SelectList(_context.Set<TipoMeta>(), "Id", "Descripcion", notificacion.objecto.TipoMeta);
-            ViewData["TipoPeso"] = new SelectList(_context.Set<TipoPeso>(), "Id", "Descripcion", notificacion.objecto.TipoPeso);
+
+            Notificacion<TipoMeta> notificacionTipoMeta = await _cRTM.ObtenerLista();
+            Notificacion<TipoPeso> notificacionTipoPeso = await _cRTP.ObtenerLista();
+            ViewData["TipoMeta"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion", notificacion.objecto.TipoMeta);
+            ViewData["TipoPeso"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion", notificacion.objecto.TipoPeso);
             return View(notificacion.objecto);
         }
 
@@ -121,8 +129,10 @@ namespace Fitness.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipoMeta"] = new SelectList(_context.Set<TipoMeta>(), "Id", "Descripcion", metaSalud.TipoMeta);
-            ViewData["TipoPeso"] = new SelectList(_context.Set<TipoPeso>(), "Id", "Descripcion", metaSalud.TipoPeso);
+            Notificacion<TipoMeta> notificacionTipoMeta = await _cRTM.ObtenerLista();
+            Notificacion<TipoPeso> notificacionTipoPeso = await _cRTP.ObtenerLista();
+            ViewData["TipoMeta"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion", metaSalud.TipoMeta);
+            ViewData["TipoPeso"] = new SelectList(notificacionTipoPeso.lista, "Id", "Descripcion", metaSalud.TipoPeso);
           
             return View(metaSalud);
         }

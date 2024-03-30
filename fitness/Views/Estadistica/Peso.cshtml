@@ -1,0 +1,40 @@
+﻿<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    (async () => {
+        const ctx = document.getElementById('myChart');
+        const request = new Request("/Estadistica/ObtenerDatosPeso");
+        const response = await fetch(request);
+        const graficoPeso = await response.json();
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: graficoPeso.historialFecha,
+                datasets: [{
+                    label: 'Peso',
+                    data: graficoPeso.historialPeso,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Historial de Pesos'
+                    }
+                }
+            },
+        });
+
+    })()
+ 
+</script>

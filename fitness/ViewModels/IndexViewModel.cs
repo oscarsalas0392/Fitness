@@ -16,20 +16,21 @@ namespace Fitness.ViewModels
         public Filtro paginacion { get; set; } = new Filtro() { columnaOrdenar = "Descripcion", columnaBuscar= "Descripcion" };
 
 
-        public async Task HandleRequest(TR cR, string columnaOrdenar = "Descripcion", string columnaBuscar = "Descripcion", int? usuario = null, bool alimento =false)
+        public async Task HandleRequest(TR cR, string columnaOrdenar = "Descripcion", string columnaBuscar = "Descripcion", int? usuario = null, int? opcion = null)
         {
             paginacion.columnaBuscar = columnaBuscar;
             paginacion.columnaOrdenar = columnaOrdenar;
 
             if (usuario is not null)
             {
-                if (!alimento)
+                if (opcion is null)
                 {
                     paginacion.usuario = usuario;
                 }
                 else
                 {
                     paginacion.dieta = usuario;
+                    paginacion.opcionGrupo = opcion;
                 }
             }
             _cR = cR;

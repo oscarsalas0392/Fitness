@@ -21,13 +21,14 @@ namespace Fitness.Controllers
     {
         private readonly FTContext _context;
         private readonly IRepositorio<Dieta, int?> _cR;
-        private readonly DietaRepositorio _cR2; 
-
-        public DietaController(FTContext context, IRepositorio<Dieta, int?> cR, DietaRepositorio cR2)
+        private readonly DietaRepositorio _cR2;
+        private readonly TipoComidaRepositorio _cRTC;
+        public DietaController(FTContext context, IRepositorio<Dieta, int?> cR, DietaRepositorio cR2, TipoComidaRepositorio cRTC)
         {
             _context = context;
             _cR = cR;
             _cR2 = cR2;
+            _cRTC = cRTC;
         }
 
         // GET: Dieta
@@ -57,9 +58,10 @@ namespace Fitness.Controllers
         }
 
         // GET: Dieta/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion");
+            Notificacion<TipoComida> notificacionTipoComida = await _cRTC.ObtenerLista();
+            ViewData["TipoComida"] = new SelectList(notificacionTipoComida.lista, "Id", "Descripcion");
             return View();
         }
 
@@ -82,7 +84,8 @@ namespace Fitness.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion", dieta.TipoComida);
+            Notificacion<TipoComida> notificacionTipoComida = await _cRTC.ObtenerLista();
+            ViewData["TipoComida"] = new SelectList(notificacionTipoComida.lista, "Id", "Descripcion", dieta.TipoComida);
             return View(dieta);
         }
 
@@ -96,7 +99,8 @@ namespace Fitness.Controllers
                 return NotFound();
             }
             GuardarIntSession(SessionKey.dieta.ToString(), notificacion.objecto.Id);
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion", notificacion.objecto.TipoComida);
+            Notificacion<TipoComida> notificacionTipoComida = await _cRTC.ObtenerLista();
+            ViewData["TipoComida"] = new SelectList(notificacionTipoComida.lista, "Id", "Descripcion", notificacion.objecto.TipoComida);
  
             return View(notificacion.objecto);
         }
@@ -125,8 +129,8 @@ namespace Fitness.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["TipoComida"] = new SelectList(_context.TipoComida, "Id", "Descripcion", dieta.TipoComida);
+            Notificacion<TipoComida> notificacionTipoComida = await _cRTC.ObtenerLista();
+            ViewData["TipoComida"] = new SelectList(notificacionTipoComida.lista, "Id", "Descripcion", dieta.TipoComida);
             return View(dieta);
         }
 

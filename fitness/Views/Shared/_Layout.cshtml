@@ -52,6 +52,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="MetaSalud" asp-action="Index">Metas de Salud</a>
                         </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Estadísticas
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Peso">Peso</a>
+                                <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Calorias">Calorias</a>
+                                <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Logros">Logros</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
 

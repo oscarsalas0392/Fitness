@@ -21,12 +21,15 @@ namespace Fitness.Controllers
         private readonly FTContext _context;
         private readonly IRepositorio<ActividadFisica, int?> _cR;
         private readonly ActividadFisicaRepositorio _cR2;
-
-        public ActividadFisicaController(FTContext context, IRepositorio<ActividadFisica, int?> cR, ActividadFisicaRepositorio cR2)
+        private readonly TipoActividadFisicaRepositorio _cRTA;
+        private readonly TipoDistanciaRepositorio _cRTD;
+        public ActividadFisicaController(FTContext context, IRepositorio<ActividadFisica, int?> cR, ActividadFisicaRepositorio cR2, TipoActividadFisicaRepositorio cRTA, TipoDistanciaRepositorio cRTD)
         {
             _context = context;
             _cR = cR;
             _cR2 = cR2;
+            _cRTA = cRTA;
+            _cRTD = cRTD;
         }
 
         // GET: ActividadFisica
@@ -56,10 +59,13 @@ namespace Fitness.Controllers
         }
 
         // GET: ActividadFisica/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion");
-            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion");
+            Notificacion<TipoActividadFisica> notificacionTipoActividadFisica = await _cRTA.ObtenerLista();
+            Notificacion<TipoDistancia> notificacionTipoDistancia = await _cRTD.ObtenerLista();
+
+            ViewData["TipoActividadFisica"] = new SelectList(notificacionTipoActividadFisica.lista, "Id", "Descripcion");
+            ViewData["TipoDistancia"] = new SelectList(notificacionTipoDistancia.lista, "Id", "Descripcion");
             return View();
         }
 
@@ -76,8 +82,12 @@ namespace Fitness.Controllers
                 Notificacion<ActividadFisica> notificacion = await _cR.Guardar(actividadFisica);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion", actividadFisica.TipoActividadFisica);
-            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion", actividadFisica.TipoDistancia);
+
+            Notificacion<TipoActividadFisica> notificacionTipoActividadFisica = await _cRTA.ObtenerLista();
+            Notificacion<TipoDistancia> notificacionTipoDistancia = await _cRTD.ObtenerLista();
+
+            ViewData["TipoActividadFisica"] = new SelectList(notificacionTipoActividadFisica.lista, "Id", "Descripcion", actividadFisica.TipoActividadFisica);
+            ViewData["TipoDistancia"] = new SelectList(notificacionTipoDistancia.lista, "Id", "Descripcion", actividadFisica.TipoDistancia);
           
             return View(actividadFisica);
         }
@@ -91,8 +101,12 @@ namespace Fitness.Controllers
             {
                 return NotFound();
             }
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Descripcion", notificacion.objecto.TipoActividadFisica);
-            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Descripcion", notificacion.objecto.TipoDistancia);
+
+            Notificacion<TipoActividadFisica> notificacionTipoActividadFisica = await _cRTA.ObtenerLista();
+            Notificacion<TipoDistancia> notificacionTipoDistancia = await _cRTD.ObtenerLista();
+
+            ViewData["TipoActividadFisica"] = new SelectList(notificacionTipoActividadFisica.lista, "Id", "Descripcion", notificacion.objecto.TipoActividadFisica);
+            ViewData["TipoDistancia"] = new SelectList(notificacionTipoDistancia.lista, "Id", "Descripcion", notificacion.objecto.TipoDistancia);
             return View(notificacion.objecto);
         }
 
@@ -120,10 +134,7 @@ namespace Fitness.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["TipoActividadFisica"] = new SelectList(_context.Set<TipoActividadFisica>(), "Id", "Id", actividadFisica.TipoActividadFisica);
-            ViewData["TipoDistancia"] = new SelectList(_context.Set<TipoDistancia>(), "Id", "Id", actividadFisica.TipoDistancia);
-   
+ 
             return View(actividadFisica);
         }
 
