@@ -1,8 +1,8 @@
 ﻿@model Fitness.Model.Models.Dieta
 
 
-
-<h4>Dieta</h4>
+<a class="regresar" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+<h4 class="d-inline-block">Editar Dieta</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -34,14 +34,10 @@
 
             <div class="form-group pt-3">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="Index" asp-controller="AlimentoConsumido">Editar alimentos</a>
             </div>
         </form>
     </div>
-</div>
-
-<div class="pt-4">
-    <a asp-action="Index" asp-controller="AlimentoConsumido">Ver alimentos</a>
-    <a asp-action="Index">Regresar</a>
 </div>
 
 @section Scripts {

@@ -15,8 +15,8 @@ public partial class Dieta
 
     public int Usuario { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime? Fecha { get; set; }
+    [Required(ErrorMessage = "La fecha es requerida.")]
+    public DateTime Fecha { get; set; }
 
     public int TipoComida { get; set; }
 

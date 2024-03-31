@@ -47,8 +47,9 @@ namespace Fitness.Controllers
 
             Notificacion<Dieta> notificacionDieta = await _cRD.ObtenerId(Dieta());
             if (notificacionDieta._estado && !notificacionDieta._excepcion && notificacionDieta.objecto is not null)
-            {           
-                 ViewBag.TipoComida = notificacionDieta.objecto.TipoComidaNavigation.Descripcion;              
+            {
+                ViewBag.IdDieta = Dieta();
+                ViewBag.TipoComida = notificacionDieta.objecto.TipoComidaNavigation.Descripcion;              
             }
 
             Notificacion<Opcion> notificacionOpcion = await _cR2.ObtenerOpciones(Dieta());

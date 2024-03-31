@@ -1,6 +1,9 @@
 ﻿@model Fitness.Model.Models.AlimentoConsumido
 
-<h4>Agregar alimentos a la dieta</h4>
+
+<a class="regresar" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+<h4 class="d-inline-block">Agregar alimentos a la dieta</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,9 +27,7 @@
     </div>
 </div>
 
-<div class="pt-3">
-    <a asp-action="Index">Regresar</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

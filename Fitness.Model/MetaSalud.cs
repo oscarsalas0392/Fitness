@@ -25,7 +25,6 @@ public partial class MetaSalud
     [Column(TypeName = "datetime")]
     public DateTime FechaObjectivo { get; set; }
 
-    [Required]
     [StringLength(500)]
     [Unicode(false)]
     public string NivelActividad { get; set; }

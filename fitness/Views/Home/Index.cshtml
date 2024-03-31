@@ -2,7 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center pt-5">
+    <h1 class="display-4">Bienvenido</h1>
+
+    <div class="row pt-2">
+        <img class="col-xs-6 col-md-6" class="photoUser" src="~/images/fitness.jpg">
+        <p class="col-xs-6 col-md-6 d-flex align-items-center text-left">
+            Optimiza tu experiencia de seguimiento de fitness con nuestra aplicación líder,  registra cada paso de tu viaje hacia un estilo de vida más saludable,  desde tus hábitos alimenticios hasta un control detallado de tu progreso. Establece metas alcanzables y sigue tu evolución día a día. Además, accede a información valiosa y estadísticas precisas que te orientarán en cada paso de tu camino hacia el bienestar físico.
+            Con nuestra aplicación, tu viaje de acondicionamiento físico nunca ha sido más fácil ni más motivador.
+        </p>
+    </div>
+
+
+    <div class="row  imgInicio">
+        <a class="col-xs-6 col-md-4" asp-controller="ActividadFisica" asp-action="Index">
+            <img class="col-xs-6 col-md-6" class="photoUser" src="~/images/actividadFisica.jpg">
+            <p>Actividad Fisica</p>
+        </a >
+
+        <a class="col-xs-6 col-md-4" asp-controller="Dieta" asp-action="Index">
+            <img class="col-xs-6 col-md-6" class="photoUser" src="~/images/dieta.jpg">
+            <p>Dieta</p>
+        </a>
+
+        <a class="col-xs-6 col-md-4" asp-controller="MetaSalud" asp-action="Index">
+            <img class="col-xs-6 col-md-6" class="photoUser" src="~/images/Salud.jpg">
+            <p>Meta de Salud</p>
+        </a>
+    </div>
+    
 </div>

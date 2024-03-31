@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Editar Actividad Fisica";
 }
-<h4>Editar Actividad Fisica</h4>
+
+<a class="regresar" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+<h4 class="d-inline-block">Editar Actividad Fisica</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -32,7 +35,7 @@
 
                 <label asp-for="Distancia" class="control-label"></label>
                 <div class="content_Peso">
-                    <input asp-for="Distancia" class="form-control" />
+                    <input class="form-control" type="number" asp-for="@Model.Distancia" min="0" value="@Model.Distancia.ToString().Replace(",",".")" step=".01">
                     <span asp-validation-for="Distancia" class="text-danger"></span>
                     <select asp-for="TipoDistancia" class="form-control" asp-items="ViewBag.TipoDistancia"></select>
                 </div>
@@ -55,9 +58,6 @@
     </div>
 </div>
 
-<div class="pt-4">
-    <a asp-action="Index">Regresar</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

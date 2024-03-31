@@ -6,12 +6,13 @@
     ViewData["Title"] = "Alimentos a consumir";
 }
 
-<h1>@ViewBag.TipoComida</h1>
-
-<h3>Alimientos a consumir</h3>
+<a class="regresar" asp-action="Details" asp-controller="Dieta" asp-route-id="@ViewBag.IdDieta"><i class="fas fa-arrow-left"></i></a>
+<h1 class="d-inline-block">@ViewBag.TipoComida</h1>
+<hr />
+<h3>Alimientos de la dieta</h3>
 
 <p>
-    <a asp-action="Create">Agregar</a>
+    <a class="btn btn-primary" asp-action="Create">Agregar</a>
 </p>
 
 <div id="processing" data-message="Procesando espere ..."></div>
@@ -24,13 +25,15 @@
             <input  id="sort" asp-for="paginacion.columnaOrdenar" type="hidden" />
             <input  id="sortdir" asp-for="paginacion.tipoOrdernar" type="hidden" />
             <div class="content_Peso gap-2">
-                <input class="buscarAqui" asp-for="filtro.Descripcion" placeholder="Buscar aquí ..." />
+                <input class="buscarAqui form-control" asp-for="filtro.Descripcion" placeholder="Buscar aquí ..." />
                 <div class="content_Peso comboPlato">
                     <label asp-for="paginacion.opcionGrupo" class="control-label minutos">Plato</label>
                     <select id="option" asp-for="paginacion.opcionGrupo" class="form-control" asp-items="ViewBag.Opciones"></select>
                 </div>
-                <button data-command="search">Search</button>
+                <button class="btn btn-dark" data-command="search">Buscar</button>
             </div>
+
+ 
          
         </div>
         <table class="table">

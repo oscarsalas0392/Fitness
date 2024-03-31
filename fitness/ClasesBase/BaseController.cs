@@ -14,7 +14,7 @@ namespace Fitness.ClasesBase
         {
             string? json = HttpContext.Session.GetString("usuario");
 
-            if (json != null)
+            if (json != null || json == "")
             {
                 Usuario? usuario = JsonConvert.DeserializeObject<Usuario>(json);
 
@@ -53,9 +53,9 @@ namespace Fitness.ClasesBase
             try
             {
                 string? json = HttpContext.Session.GetString("usuario");
-                if (json == null)
+                if (json == null || json== "")
                 {
-                    context.Result = RedirectToAction("Index", "Acceso");
+                    context.Result = RedirectToAction("Login", "Acceso");
                     return;
                 }
 
@@ -63,12 +63,12 @@ namespace Fitness.ClasesBase
 
                 if (usuario is null)
                 {
-                    context.Result = RedirectToAction("Index", "Acceso");
+                    context.Result = RedirectToAction("Login", "Acceso");
                 }
             }
             catch 
             {
-                context.Result = RedirectToAction("Index", "Acceso");
+                context.Result = RedirectToAction("Login", "Acceso");
             }
         }
     }

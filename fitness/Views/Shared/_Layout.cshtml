@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="~/Content/sweetalert/sweet-alert.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/fitness.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
 <body>
     <header>
@@ -59,35 +60,43 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Peso">Peso</a>
-                                <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Calorias">Calorias</a>
-                                <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Logros">Logros</a>
+                                <a class="nav-link text-dark" asp-controller="Estadistica" asp-action="Calorias">Calorías</a>
                             </div>
                         </li>
                     </ul>
                 </div>
 
                 <button class="buttonPhoto">
-
-
                     <a class="aPhoto nav-link text-dark" asp-route-id="@usuario?.Id" asp-controller="Usuario" asp-action="Edit">
                         @if (usuario.Foto == null)
                         {
                             <img class="photoUser" src="~/images/person-circle.svg">
+                         
                         }
                         else
                         {
                             <img class="photoUser" src="@usuario.Foto">
+                      
                         }       
                     </a>
+                    <p>@usuario.NombreUsuario</p>
                 </button>
+
+                  <a  class="exit"  asp-controller="Acceso" asp-action="Salir">
+                    <img class="photoUser" src="~/images/box-arrow-right.svg">
+                 </a>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+    <div class="content_principal">
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    
     </div>
+
 
     <footer class="border-top footer text-muted">
         <div class="container">

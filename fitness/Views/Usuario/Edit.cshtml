@@ -6,15 +6,15 @@
     ViewData["Title"] = "Editar Usuario";
 }
 
-
-<h4>Editar Usuario</h4>
+<a class="regresar" asp-action="Index" asp-controller="Home"><i class="fas fa-arrow-left"></i></a>
+<h4 class="d-inline-block">Editar Usuario</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="@Model.usuario.Id" />
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <div class="content_photoEdit">
                     @if (@Model.usuario?.Foto != null)
                     {
@@ -28,28 +28,28 @@
                     <input id="picField" type="file" class="inputEditPhoto" name="photo" />
                 </div>           
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.NombreUsuario" class="control-label">Usuario</label>
                 <input asp-for="@Model.usuario.NombreUsuario" class="form-control" />
                 <span asp-validation-for="@Model.usuario.NombreUsuario" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.Correo" class="control-label"></label>
                 <input asp-for="@Model.usuario.Correo" class="form-control" />
                 <span asp-validation-for="@Model.usuario.Correo" class="text-danger"></span>
             </div>
  
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.Nombre" class="control-label"></label>
                 <input asp-for="@Model.usuario.Nombre" class="form-control" />
                 <span asp-validation-for="@Model.usuario.Nombre" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.FechaNacimiento" class="control-label">Fecha de Nacimiento</label>
                 <input asp-for="@Model.usuario.FechaNacimiento" class="form-control" />
                 <span asp-validation-for="@Model.usuario.FechaNacimiento" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.Altura" class="control-label"></label>
                 <div class="content_Peso">
                     <input class="form-control col" type="number" asp-for="@Model.usuario.Altura" asp-validation-for="@Model.usuario.Altura" min="0" value="@Model.usuario.Altura.ToString().Replace(",",".")" step=".01">
@@ -68,7 +68,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.Peso" class="control-label"></label>
                 <div class="content_Peso">
                     <input class="form-control" type="number" asp-for="@Model.usuario.Peso" asp-validation-for="@Model.usuario.Peso" min="0" value="@Model.usuario.Peso.ToString().Replace(",",".")" step=".01">
@@ -87,7 +87,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="@Model.usuario.Genero" class="control-label"></label>
                 <select asp-for="@Model.usuario.Genero" asp-validation-for="@Model.usuario.Peso" required class="form-control">
                     @foreach (Genero genero in Model.lstGenero)
@@ -105,16 +105,13 @@
          
             </div>
 
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" asp-controller="Home" >Regresar</a>
-</div>
 
 <script>
     document.getElementById('picField').onchange = function (evt) {

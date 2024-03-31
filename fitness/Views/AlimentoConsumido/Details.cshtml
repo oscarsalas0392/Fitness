@@ -3,7 +3,8 @@
 
 
 <div>
-    <h4>Alimento de la dieta</h4>
+    <a class="regresar" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+    <h4 class="d-inline-block">Alimento de la dieta</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -21,7 +22,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
-    <a asp-action="Index">Regresar</a>
+    <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@Model?.Id">Editar</a>
 </div>
 

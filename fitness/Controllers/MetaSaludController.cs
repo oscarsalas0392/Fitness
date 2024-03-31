@@ -35,7 +35,7 @@ namespace Fitness.Controllers
         // GET: MetaSalud
         public async Task<IActionResult> Index(IndexViewModel<MetaSalud, MetaSaludRepositorio, int?> vm)
         {
-            await vm.HandleRequest(_cR2, "FechaObjectivo", "Descripcion", Usuario().Id);
+            await vm.HandleRequest(_cR2, "FechaObjectivo", "TipoMetaNavigation.Descripcion", Usuario().Id);
 
             if (Request.IsAjaxRequest())
             {
@@ -101,7 +101,7 @@ namespace Fitness.Controllers
             Notificacion<TipoMeta> notificacionTipoMeta = await _cRTM.ObtenerLista();
             Notificacion<TipoPeso> notificacionTipoPeso = await _cRTP.ObtenerLista();
             ViewData["TipoMeta"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion", notificacion.objecto.TipoMeta);
-            ViewData["TipoPeso"] = new SelectList(notificacionTipoMeta.lista, "Id", "Descripcion", notificacion.objecto.TipoPeso);
+            ViewData["TipoPeso"] = new SelectList(notificacionTipoPeso.lista, "Id", "Descripcion", notificacion.objecto.TipoPeso);
             return View(notificacion.objecto);
         }
 

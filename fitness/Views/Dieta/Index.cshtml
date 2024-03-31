@@ -6,7 +6,7 @@
 <h1>Dieta</h1>
 
 <p>
-    <a asp-action="Create">Agregar</a>
+    <a class="btn btn-primary" asp-action="Create">Agregar</a>
 </p>
 
 
@@ -16,11 +16,14 @@
     <div class="d-flex flex-column">
         <div>
             <input id="command" asp-for="Command" type="hidden" />
-            <input asp-for="filtro.Descripcion" placeholder="Buscar aquí ..." />
             <input id="page" asp-for="paginacion.numeroPagina" type="hidden" />
             <input id="sort" asp-for="paginacion.columnaOrdenar" type="hidden" />
             <input id="sortdir" asp-for="paginacion.tipoOrdernar" type="hidden" />
-            <button data-command="search">Search</button>
+      
+            <div class="content_Peso">
+                <input class="form-control" asp-for="filtro.Descripcion" placeholder="Buscar aquí ..." />
+                <button class="btn btn-dark" data-command="search">Buscar</button>
+            </div>
         </div>
         <table class="table">
             <thead>

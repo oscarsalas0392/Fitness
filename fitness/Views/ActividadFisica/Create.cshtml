@@ -4,7 +4,9 @@
     ViewData["Title"] = "Agregar Actividad Fisica";
 }
 
-<h4>Agregar Actividad Fisica</h4>
+<a class="regresar" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+<h4 class="d-inline-block">Agregar Actividad Fisica</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,15 +26,15 @@
                 <label asp-for="Duracion" class="control-label">Duración</label>
                 <div class="content_Peso">
                     <input asp-for="Duracion" class="form-control" />
-                    <span asp-validation-for="Duracion" class="text-danger"></span>
                     <span class="minutos" >Minutos</span>
                 </div>
+                <span asp-validation-for="Duracion" class="text-danger"></span>
             </div>
             <div class="form-group pt-3">
                 
                 <label asp-for="Distancia" class="control-label"></label>
                 <div class="content_Peso">
-                    <input asp-for="Distancia" class="form-control" />
+                    <input asp-for="Distancia" class="form-control" step=".01" min="0" />
                     <span asp-validation-for="Distancia" class="text-danger"></span>
                     <select asp-for="TipoDistancia" class="form-control" asp-items="ViewBag.TipoDistancia"></select>
                 </div>
@@ -56,9 +58,6 @@
     </div>
 </div>
 
-<div class="pt-4">
-    <a asp-action="Index">Regresar</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

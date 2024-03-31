@@ -15,52 +15,52 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="~/Content/css/Login.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="container h-100">
-        <div class="d-flex justify-content-center h-100">
-            <div class="user_card">
-                <div class="d-flex justify-content-center">
- 
+    <div class="container content_login">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="row h-75">
+                <div class="col-xs-6 col-md-7 d-flex justify-content-center ">
+                    <img class="photoUser" src="~/images/fitness.jpg">
                 </div>
-                <div class="d-flex justify-content-center form_container">
+                <div class="col-xs-6 col-md-5 ">
                     <form action="@Url.Action("Registrar","Acceso")" method="post">
                         <div class="input-group mb-3">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <span class="input-group-text input_login"><i class="fas fa-user"></i></span>
                             </div>
-                            <input required type="text" name="NombreUsuario" class="form-control input_user" value="@(Model.usuario !=null ? Model.usuario.NombreUsuario : "")" placeholder="Usuario">
+                            <input required type="text" name="NombreUsuario" class="form-control" value="@(Model.usuario !=null ? Model.usuario.NombreUsuario : "")" placeholder="Usuario">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <span class="input-group-text input_login"><i class="fas fa-envelope"></i></span>
                             </div>
                             <input required type="email" name="Correo" class="form-control input_user" value="@(Model.usuario !=null ? Model.usuario.Correo : "")" placeholder="Correo">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <span class="input-group-text input_login"><i class="fas fa-key"></i></span>
                             </div>
                             <input required type="password" name="Contrasena" class="form-control input_user" value="@(Model.usuario !=null ? Model.usuario.Contrasena : "")" placeholder="Contraseña">
                         </div>
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-3">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <span class="input-group-text input_login"><i class="fas fa-user"></i></span>
                             </div>
                             <input required type="text" name="Nombre" class="form-control" value="@(Model.usuario !=null ? Model.usuario.Nombre : "")" placeholder="Nombre ">
                         </div>
 
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-3">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <span class="input-group-text input_login"><i class="fas fa-calendar"></i></span>
                             </div>
                             <input required type="date" name="FechaNacimiento" class="form-control" value="@(Model.usuario !=null ? Model.usuario.FechaNacimiento : "")" placeholder="Fecha de Nacimiento">
                         </div>
 
-                        <div class="input-group mb-2">
+                        <div class="input-group mb-3">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                                <span class="input-group-text input_login"><i class="fas fa-users"></i></span>
                             </div>
                             <select required name="Genero" class="form-control">
                                     @foreach(Genero genero in Model.lstGenero)
@@ -81,17 +81,19 @@
                             <button type="submit" name="button" class="btn login_btn">Registrarse</button>
                         </div>
                     </form>
-                </div>
 
-                <div class="mt-4">
-                    <div class="d-flex justify-content-center links">
-                        Ya tienes una cuenta? <a href="@Url.Action("Login","Acceso")" class="ml-2">Inciar Sesion</a>
+                    <div class="mt-4">
+                        <div class="row links">
+                            <p class="col-xs-6 col-md-7 text-center">Ya tienes una cuenta?</p>
+                            <a class="col-xs-6 col-md-5 text-center" href="@Url.Action("Login","Acceso")" class="ml-2">Iniciar Sesion</a>
+                        </div>
                     </div>
                 </div>
+   
             </div>
         </div>
     </div>
-
+    <script charset="utf-8" type="text/javascript">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -102,7 +104,8 @@
                 Swal.fire({
                     title: "Error",
                     text: '@TempData["MensajeError"]',
-                    icon: "error"
+                    icon: "error",
+                    html: '@TempData["MensajeError"]'
                 });
             };
         </script>

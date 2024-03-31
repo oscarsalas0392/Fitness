@@ -32,12 +32,16 @@ namespace Fitness.Controllers
         }
         public IActionResult Login()
         {
-            int? id = HttpContext.Session.GetInt32("usuario");
-            if (id != null)
-            { 
-               return RedirectToAction("Index","Home");
-            }
+         
             return View();
+        }
+
+        public IActionResult Salir()
+        {
+            HttpContext.Session.SetString("usuario", "");
+      
+            return RedirectToAction("Login", "Acceso");
+           
         }
         public async Task<List<Genero>> obtenerListaGenero()
         {

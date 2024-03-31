@@ -1,47 +1,50 @@
 ﻿@model Fitness.Model.Models.MetaSalud
 
-<h4>Editar Meta de Salud</h4>
+
+<a class="regresar" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+<h4 class="d-inline-block">Editar Meta de Salud</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="TipoMeta" class="control-label">Tipo de Meta</label>
                 <select asp-for="TipoMeta" class="form-control" asp-items="ViewBag.TipoMeta"></select>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="PesoObjectivo" class="control-label">Peso Objetivo</label>
-                <input asp-for="PesoObjectivo" class="form-control" />
+                <div class="content_Peso">
+                    <input class="form-control" type="number" asp-for="@Model.PesoObjectivo" min="0" value="@Model.PesoObjectivo.ToString().Replace(",",".")" step=".01">
+                    <select asp-for="TipoPeso" class="form-control" asp-items="ViewBag.TipoPeso"></select>
+                </div>        
                 <span asp-validation-for="PesoObjectivo" class="text-danger"></span>
-                <select asp-for="TipoPeso" class="form-control" asp-items="ViewBag.TipoPeso"></select>
+              
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="FechaObjectivo" class="control-label">Fecha Objectivo</label>
                 <input asp-for="FechaObjectivo" class="form-control" />
                 <span asp-validation-for="FechaObjectivo" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="NivelActividad" class="control-label">Nivel de actividad</label>
                 <input asp-for="NivelActividad" class="form-control" />
                 <span asp-validation-for="NivelActividad" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label asp-for="OjectivoEspecifico" class="control-label">Ojectivo Específico</label>
                 <textarea asp-for="OjectivoEspecifico" class="form-control"></textarea>
                 <span asp-validation-for="OjectivoEspecifico" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <input type="submit" value="Guardar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Regresar</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
